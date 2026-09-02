@@ -1110,16 +1110,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .wordmark{font-size:clamp(32px,8.6vw,84px);padding-left:var(--pad)}
 }
 
-
-/* ============================================================
-   移除開場電影（review/no-opening 專用的唯一改動）
-   兩個開場都不顯示，頁面直接從 .sec-team 開始 —— 版面完全等於昨天那版。
-   第一幕的 DOM 原封不動留著，只是不顯示、也不再跑 scrub。
-   .rise 彈出動畫用自己的 IntersectionObserver，不受影響。
-   要還原：刪掉這個區塊，並移除 GATES 裡的 '(min-width: 0px)'。
-   ============================================================ */
-.hero{display:none !important}
-.static-hero{display:none !important}   /* 靜態開場是另一套直式構圖，用了版面會跟昨天不一樣 */
 </style>
 </head>
 <body>
@@ -2200,7 +2190,6 @@ function runLoadRamp(){
 
 /* ---------- 靜態開場的五個條件：跟 CSS 一字不差 ---------- */
 var GATES = [
-  '(min-width: 0px)',            /* no-opening：永遠成立，直接走靜態開場 */
   '(max-width: 720px)',
   '(orientation: portrait) and (max-width: 1024px)',
   '(orientation: portrait) and (pointer: coarse)',
