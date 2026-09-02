@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dear Light 團隊</title>
+<meta name="description" content="Dear Light 團隊是一個小小的獨立開發團隊。我們做工具，讓人在需要多一點底氣的時候，可以先看清楚，再決定。目前有兩個作品：Dear Light App 與歸・有光。">
+<meta name="theme-color" content="#0e1329">
+<!-- DEPLOY STEP: 上線時把下面兩個網址換成真實網址 -->
+<meta property="og:title" content="Dear Light 團隊">
+<meta property="og:description" content="在你需要多一點底氣的地方，我們都在。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://christinelin0927-dot.github.io/">
+<meta property="og:image" content="https://christinelin0927-dot.github.io/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230e1329'/%3E%3Cpath d='M16 6 L26 24 H6 Z' fill='none' stroke='%23efe6d3' stroke-width='2'/%3E%3Crect x='14' y='24' width='1.6' height='6' fill='%236a4fd0'/%3E%3Crect x='15.6' y='24' width='1.6' height='6' fill='%2335b8c9'/%3E%3Crect x='17.2' y='24' width='1.6' height='6' fill='%23e3c94a'/%3E%3Crect x='18.8' y='24' width='1.6' height='6' fill='%23cf4636'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+TC:wght@400;500;900&family=Noto+Serif+TC:wght@300;400;500&family=DM+Mono:wght@400;500&family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Dear Light 團隊
+   一顆流星穿過雲層，散開，落下來，變成三種顏色的紙。
+   ============================================================ */
+
+:root{
+  /* 第一幕：暗處。取樣自開場畫面本身 */
+  --ink:#0e1329;
+  --ink-deep:#090c1c;
+  --ink-mid:#15274c;
+
+  /* 第二幕：光落地。象牙白是 Dear Light 自己的品牌色 */
+  --paper:#efe6d3;
+  --paper-2:#e6dac2;
+  --text:#2c2419;          /* 12.33:1 於象牙白 */
+  --text-soft:#6b5f4d;     /* 5.02:1 於象牙白 */
+  --text-light:#efe6d3;
+
+  /* 光譜。只做色塊，絕不做文字 */
+  --s1:#6a4fd0; --s2:#3b6fe0; --s3:#35b8c9; --s4:#57bf6a;
+  --s5:#e3c94a; --s6:#e08a3c; --s7:#cf4636;
+
+  /* 作品各自的顏色 */
+  --dl-gold:#c98f3f;       /* Dear Light 暖金：只做色塊 */
+  --dl-text:#8a5f1e;       /* 壓深的暖金：4.53:1，做文字 */
+  --gy-ink:#1b1712;        /* 歸・有光 夜墨黑 */
+  --gy-gold:#c9974b;       /* 燭金：6.80:1 於夜墨黑 */
+  --gy-red:#9c3b2e;        /* 印泥硃紅：5.50:1 於象牙白 */
+
+  --accent:var(--gy-red);
+  --accent-hover:#87301f;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-soft:cubic-bezier(.4,0,.2,1);
+
+  --tshadow:0 1px 2px rgba(5,5,14,.95),0 3px 12px rgba(5,5,14,.78),0 10px 44px rgba(5,5,14,.8);
+
+  --rail-w:64px;
+  --pad:clamp(20px,5vw,88px);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html,body{
+  overflow-x:hidden;
+  overflow-x:clip;
+  margin:0;
+  padding:0;
+}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--ink);
+  color:var(--text-light);
+  font-family:"Noto Sans TC",system-ui,sans-serif;
+  font-weight:400;
+  font-size:16px;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:.01em;
+}
+
+/* 頁面本身也是慢慢進來的，不是彈出來的 */
+body{opacity:0;transition:opacity .9s var(--ease-soft)}
+body.ready{opacity:1}
+
+img{max-width:100%;display:block}
+a{color:inherit}
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:999;
+  background:var(--paper);color:var(--text);
+  padding:14px 20px;font-weight:500;text-decoration:none;
+}
+.skip:focus{left:0}
+
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
+.on-ink :focus-visible{outline-color:var(--gy-gold)}
+
+/* ============ 固定的環境層。整頁是一個地方，不是疊起來的段落 ============ */
+.env{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 22% 18%,rgba(90,120,200,.10) 0%,rgba(90,120,200,0) 60%),
+    radial-gradient(90% 70% at 82% 76%,rgba(201,143,63,.07) 0%,rgba(201,143,63,0) 62%);
+  animation:envdrift 96s var(--ease-soft) -22s infinite alternate;
+  opacity:.9;
+}
+@keyframes envdrift{
+  from{transform:translate3d(0,0,0) scale(1)}
+  to{transform:translate3d(-2.5%,1.8%,0) scale(1.06)}
+}
+
+/* ============ 招牌元素：光譜軸 ============ */
+.rail{
+  position:fixed;left:0;top:0;bottom:0;width:var(--rail-w);
+  z-index:40;pointer-events:none;
+  display:flex;align-items:stretch;justify-content:center;
+}
+.rail-line{
+  position:relative;width:3px;margin:9vh 0;border-radius:2px;
+  background:linear-gradient(to bottom,var(--s1),var(--s2),var(--s3),var(--s4),var(--s5),var(--s6),var(--s7));
+  opacity:.30;
+}
+.rail-mark{
+  position:absolute;left:50%;top:0;width:26px;height:3px;border-radius:2px;
+  background:var(--text-light);
+  box-shadow:0 0 0 1px rgba(18,16,28,.55);
+  transform:translate(-50%,0);
+  will-change:transform;
+}
+.rail-read{
+  position:absolute;left:50%;top:0;
+  transform:translate(-50%,14px);
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;letter-spacing:.2em;line-height:1.4;
+  color:#efe6d3;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  white-space:nowrap;
+  background:rgba(16,14,26,.62);
+  border-radius:9px;
+  padding:9px 2px;
+  backdrop-filter:blur(8px);
+  will-change:transform;
+}
+body.lit .rail-line{opacity:.62}
+
+/* ============ 導覽：像文件的頁首，不像廣告 ============ */
+.nav{
+  position:absolute;top:0;left:0;right:0;z-index:50;
+  color:var(--text-light);
+  display:flex;justify-content:space-between;align-items:baseline;gap:24px;
+  padding:22px var(--pad) 0 calc(var(--rail-w) + 8px);
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+}
+.nav a{text-decoration:none;opacity:.8;transition:opacity .35s var(--ease)}
+.nav a:hover{opacity:1}
+.nav-links{display:flex;gap:22px;flex-wrap:wrap}
+.nav-mark{font-family:"Syne",sans-serif;font-weight:800;letter-spacing:.1em;opacity:1}
+
+/* ============================================================
+   第一幕：Hero。暗處，跟著光往下走
+   ============================================================ */
+.hero{position:relative;z-index:10}
+.hero-track{height:760vh}
+
+.stage{
+  position:sticky;top:0;height:100svh;height:100vh;
+  overflow:hidden;background:var(--ink);
+  --hp:0;--fan:0;--wash:0;--bar:0;--bloom:0;
+}
+
+.photo{
+  position:absolute;inset:0;
+  background:var(--ink-deep) center/cover no-repeat;
+  transform:translateZ(0) scale(calc(1 + .07 * var(--hp))) translateY(calc(var(--hp) * -2.2vh));
+  will-change:transform;
+}
+.stage.no-photo .photo{
+  background-image:none !important;
+  background:radial-gradient(120% 90% at 34% 46%,#1c2b52 0%,var(--ink-deep) 70%);
+}
+
+/* 全域基礎遮罩：沒有一格畫面是生的 */
+.scrim{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 118% 88% at 34% 46%,rgba(10,10,24,0) 30%,rgba(10,10,24,.66) 100%);
+}
+
+/* 手繪的光譜扇形。這是影片本來要做的事 */
+.fan{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.fan rect{
+  transform-box:view-box;
+  transform-origin:950px 968px;
+  transform:rotate(calc(var(--ang) * var(--fan))) scaleY(calc(.02 + .98 * var(--fan)));
+  opacity:calc(var(--fan) * .92);
+}
+
+/* 光落地。分兩層：先從光束綻開，再整片落定。
+   光是湧進來的，不是一張紙蓋過來的 */
+.wash-bloom{
+  position:absolute;inset:-25%;pointer-events:none;
+  background:radial-gradient(circle at 34% 60%,
+    rgba(239,230,211,1) 0%,
+    rgba(239,230,211,.82) 24%,
+    rgba(239,230,211,0) 60%);
+  opacity:var(--bloom);
+  transform:scale(calc(.3 + 1.05 * var(--bloom)));
+  will-change:transform,opacity;
+}
+/* 不用淡出。鏡頭繼續往下走，所以上面的東西往上退出畫面，
+   下面的象牙白從底下升上來，整段是一個連續的垂直移動 */
+.wash{
+  position:absolute;inset:0;pointer-events:none;
+  background:var(--paper);
+  transform:translateY(calc((1 - var(--exit)) * 101%));
+}
+.wash-bloom{display:none}
+
+/* 光變成顏料：印出來的光譜條 */
+.bar{
+  position:absolute;left:var(--pad);right:var(--pad);bottom:9vh;
+  height:clamp(38px,7vh,74px);
+  display:flex;
+  opacity:var(--bar);
+  transform:scaleX(calc(.14 + .86 * var(--bar)));
+  transform-origin:22% 50%;
+}
+.bar i{flex:1}
+.bar-labels{
+  position:absolute;left:var(--pad);right:var(--pad);
+  bottom:calc(9vh - 26px);
+  display:flex;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:9px;letter-spacing:.1em;color:var(--text-soft);
+  opacity:calc(var(--bar) * var(--bar));
+}
+.bar-labels i{flex:1;font-style:normal}
+
+/* ---- 文字段落 ---- */
+/* 不用整塊黑底，改成貼著筆畫的描邊。
+   paint-order:stroke fill 讓描邊畫在字的後面，字形不會被吃掉 */
+.band{
+  position:absolute;top:57%;
+  right:var(--pad);
+  width:min(44vw,560px);
+  transform:translateY(-50%);
+  opacity:0;
+  --k:0;
+}
+.band p,.band h1{
+  paint-order:stroke fill;
+  -webkit-text-stroke:4px rgba(4,4,12,.88);
+  text-shadow:
+    0 2px 6px rgba(4,4,12,.85),
+    0 8px 26px rgba(4,4,12,.7);
+}
+.band .btn{-webkit-text-stroke:0;text-shadow:none}
+/* 收尾落在象牙白上，暗底用的描邊和陰影都要拿掉 */
+.b-settle .huge,.b-settle .sub{-webkit-text-stroke:0;text-shadow:none}
+@media (max-width:720px){
+  .band p,.band h1{-webkit-text-stroke-width:3px}
+}
+/* 開場的字走優雅路線：襯線、細、寬鬆。
+   跟下半頁的超粗黑體形成對比，不是同一種聲音 */
+.band p{
+  margin:0;
+  font-family:"Noto Serif TC",serif;
+  font-weight:400;
+  font-size:clamp(31px,4.5vw,64px);
+  line-height:1.5;
+  letter-spacing:.035em;
+}
+.band .sr{
+  position:absolute;width:1px;height:1px;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;
+}
+
+.w{display:inline-block;white-space:nowrap}
+.c{display:inline-block}
+
+/* (a) 模糊轉清晰：光還沒分開，字也還沒清楚 */
+.b-blur .soft,.b-blur .sharp{display:block}
+.b-blur .soft{
+  position:absolute;top:0;left:0;right:0;
+  filter:blur(11px);
+  opacity:calc(1 - var(--k,0));
+}
+.b-blur .sharp{opacity:var(--k,0)}
+
+/* (b) 對半分開：字從中線讓開，像光被劈開 */
+.b-part .h{display:inline-block}
+.b-part .h-l{transform:translateX(calc((1 - var(--k,0)) * -120px))}
+.b-part .h-r{transform:translateX(calc((1 - var(--k,0)) * 120px))}
+.b-part .h{opacity:calc(.15 + .85 * var(--k,0))}
+
+/* (c) 色散聚合：自創。青色和紅色的副本錯開，往中間合成白字 */
+.b-chroma .c{
+  --kc:clamp(0,(var(--k,0) - var(--th,0)) * 1.8,1);
+  position:relative;
+  opacity:calc(.1 + .9 * var(--kc));
+}
+.b-chroma .c::before,.b-chroma .c::after{
+  content:attr(data-ch);
+  position:absolute;left:0;top:0;
+  pointer-events:none;
+  opacity:calc(1 - var(--kc));
+}
+.b-chroma .c::before{color:var(--s3);transform:translate(calc((1 - var(--kc)) * -34px),calc((1 - var(--kc)) * -10px))}
+.b-chroma .c::after{color:var(--s7);transform:translate(calc((1 - var(--kc)) * 34px),calc((1 - var(--kc)) * 10px))}
+
+/* (d) 逐字升起，分三次到位。抵達的那一段 */
+.b-settle{
+  right:auto;left:0;width:100vw;
+  text-shadow:none;
+  padding-left:calc(var(--rail-w) + 10px);
+  color:var(--text);
+}
+.b-settle::before{display:none}
+.b-settle .huge{
+  margin:0;
+  font-weight:900;
+  font-size:clamp(32px,6.4vw,108px);
+  line-height:1.06;
+  letter-spacing:-.04em;
+  text-spacing-trim:trim-both;
+  width:max-content;
+  max-width:none;
+  margin-left:-.06em;
+}
+.b-settle .w{
+  --kc:clamp(0,(var(--k,0) - var(--th,0)) * 2.6,1);
+  opacity:var(--kc);
+  transform:translateY(calc((1 - var(--kc)) * 34px));
+}
+.b-settle .sub{
+  --ks:clamp(0,(var(--k,0) - .60) * 3.6,1);
+  margin:clamp(16px,2.4vw,30px) 0 0;
+  font-size:clamp(15px,1.5vw,21px);
+  font-weight:400;color:var(--text-soft);
+  opacity:var(--ks);
+  transform:translateY(calc((1 - var(--ks)) * 16px));
+}
+.b-settle .cta-row{
+  --kb:clamp(0,(var(--k,0) - .76) * 4.4,1);
+  margin-top:clamp(20px,3vw,38px);
+  display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  opacity:var(--kb);
+  transform:translateY(calc((1 - var(--kb)) * 14px));
+}
+
+/* 捲動提示 */
+.cue{
+  position:absolute;left:calc(var(--rail-w) + 10px);bottom:26px;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  opacity:calc(.62 - var(--hp) * 3);
+  display:flex;align-items:center;gap:10px;
+}
+.cue span{display:block;width:34px;height:1px;background:currentColor;
+  animation:cueslide 2.6s var(--ease-soft) -.6s infinite}
+@keyframes cueslide{0%,100%{transform:scaleX(.3);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}}
+
+/* ============ 靜態開場：手機與關閉動效的訪客。設計過的版面 ============ */
+/* 静態開場：為直式畫面重新構圖的手繪畫面，跟桌機版同一種語言。
+   不是把桌機版縮小，也不是壞掉的補丁 */
+.static-hero{
+  display:none;position:relative;z-index:10;
+  min-height:100svh;min-height:100vh;
+  padding:96px var(--pad) 56px var(--pad);
+  background:radial-gradient(120% 70% at 50% 34%,#1a2547 0%,#0e1329 55%,#080b1a 100%);
+  flex-direction:column;justify-content:flex-end;
+  overflow:hidden;
+}
+.static-scene{position:absolute;inset:0;width:100%;height:100%}
+.static-scene .s-rays rect{
+  transform-box:view-box;transform-origin:400px 588px;
+  transform:rotate(var(--a));
+  opacity:.88;
+}
+.static-hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(9,12,28,.20) 0%,rgba(9,12,28,.30) 38%,rgba(9,12,28,.88) 68%,rgba(9,12,28,.97) 100%);
+}
+.static-inner{position:relative;z-index:2}
+.static-hero h1{
+  margin:0;font-weight:900;
+  font-size:clamp(34px,10.5vw,64px);
+  line-height:1.06;letter-spacing:-.04em;
+  text-shadow:var(--tshadow);
+}
+.static-hero .sub{
+  margin:16px 0 0;color:#cfd6e6;font-size:15px;
+  text-shadow:0 2px 10px rgba(5,5,14,.9);
+}
+.static-bar{display:flex;height:26px;margin:30px 0 26px;border-radius:2px;overflow:hidden}
+.static-bar i{flex:1}
+
+/* ============================================================
+   第二幕：光落地。平面、印刷感、沒有中線
+   ============================================================ */
+main{position:relative;z-index:10;background:var(--paper);color:var(--text)}
+
+section{position:relative;padding:clamp(74px,11vh,150px) var(--pad) clamp(74px,11vh,150px) calc(var(--rail-w) + 10px)}
+
+/* 小字像一份資訊表，不像廣告 */
+.mono{
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-soft);
+}
+.kicker{display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(22px,3vw,44px)}
+.kicker .rule{flex:1;height:1px;background:currentColor;opacity:.28;max-width:180px}
+
+/* 巨大標題，往兩側出血 */
+.huge{
+  margin:0;font-weight:900;
+  font-size:clamp(46px,9.6vw,164px);
+  line-height:1.05;letter-spacing:-.045em;
+  text-spacing-trim:trim-both;
+  width:max-content;max-width:none;
+  margin-left:-.055em;
+}
+.huge.bleed-l{margin-left:-.22em}
+/* 出血只給拉丁名字。Dear Light 切掉尾巴還讀得出來，
+   四個字的中文名字切掉一個就不是那個名字了，所以它只放大，不切 */
+.huge.name{
+  font-size:clamp(66px,20.4vw,306px);
+  line-height:1;letter-spacing:-.06em;
+  white-space:nowrap;margin-left:-.07em;
+}
+.huge.big{
+  font-size:clamp(60px,15.5vw,232px);
+  line-height:1.08;letter-spacing:-.04em;
+  white-space:nowrap;margin-left:-.04em;
+}
+@media (max-width:720px){
+  .huge.name{font-size:clamp(46px,17vw,92px)}
+  .huge.big{font-size:clamp(44px,15vw,80px)}
+}
+
+h2,h3{margin:0;font-weight:900;letter-spacing:-.03em}
+
+.lede{
+  margin:clamp(26px,3.4vw,46px) 0 0;
+  font-size:clamp(15px,1.32vw,18px);
+  line-height:1.95;
+  max-width:52ch;
+  color:var(--text-soft);
+}
+.lede strong{color:var(--text);font-weight:500}
+
+.btn{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:15px 26px;
+  background:var(--accent);color:#fff;
+  font-weight:500;font-size:15px;letter-spacing:.02em;
+  text-decoration:none;border:0;cursor:pointer;
+  font-family:inherit;
+  text-shadow:none;
+  transition:background .4s var(--ease),transform .4s var(--ease);
+}
+.btn:hover{background:var(--accent-hover);transform:translateY(-2px)}
+.btn .arrow{display:block;width:18px;height:1.5px;background:currentColor;
+  transition:transform .4s var(--ease)}
+.btn:hover .arrow{transform:translateX(5px)}
+.btn[aria-disabled="true"]{
+  background:transparent;color:inherit;cursor:default;
+  box-shadow:inset 0 0 0 1.5px currentColor;opacity:.72;
+}
+.btn[aria-disabled="true"]:hover{background:transparent;transform:none}
+.btn-note{
+  display:block;margin-top:10px;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;letter-spacing:.08em;color:var(--text-soft);
+}
+@media (pointer:coarse){
+  .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+}
+
+/* ---- 2. 光譜落下：色票是圖例，在做真的事 ---- */
+.sec-team{padding-top:clamp(56px,8vh,110px)}
+.doc-cols{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:clamp(20px,3vw,54px);
+  max-width:1000px;
+  margin-bottom:clamp(40px,6vw,84px);
+}
+.doc-cols p{margin:0;font-size:13px;line-height:1.8;color:var(--text-soft)}
+.doc-cols p b{display:block;color:var(--text);font-weight:500;margin-bottom:6px;
+  font-family:"DM Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+
+.swatches{
+  margin-top:clamp(44px,6vw,84px);
+  margin-right:calc(var(--pad) * -1);
+  display:grid;grid-template-columns:repeat(7,1fr);
+}
+.sw{position:relative;height:clamp(96px,17vh,200px);overflow:hidden}
+.sw i{position:absolute;inset:0;transform:scaleY(0);transform-origin:bottom;
+  transition:transform 1.15s var(--ease)}
+.sw .lab{
+  position:absolute;left:9px;bottom:9px;z-index:2;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:9px;letter-spacing:.06em;color:var(--text);
+  opacity:0;transition:opacity .7s var(--ease) .35s;
+  writing-mode:vertical-rl;
+}
+.sec-team.in .sw i{transform:scaleY(1)}
+.sec-team.in .sw .lab{opacity:.9}
+.sec-team.in .sw:nth-child(1) i{transition-delay:0ms}
+.sec-team.in .sw:nth-child(2) i{transition-delay:70ms}
+.sec-team.in .sw:nth-child(3) i{transition-delay:140ms}
+.sec-team.in .sw:nth-child(4) i{transition-delay:210ms}
+.sec-team.in .sw:nth-child(5) i{transition-delay:280ms}
+.sec-team.in .sw:nth-child(6) i{transition-delay:350ms}
+.sec-team.in .sw:nth-child(7) i{transition-delay:420ms}
+
+/* ---- 3. 分光：唯一的互動時刻 ---- */
+/* 光要在暗處才看得見。這一區是亮頁面裡的第二座暗島 */
+.sec-split{
+  background:#0b0f22;color:var(--text-light);
+  margin-right:calc(var(--pad) * -1);
+  padding-right:calc(var(--pad) * 2);
+}
+.sec-split .mono{color:#8d97b8}
+.sec-split .tagline{color:var(--text-light)}
+.sec-split .lede{color:#b3bcd6}
+.sec-split .prod-pip{border-top-color:rgba(220,228,255,.16)}
+.sec-split::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(70% 60% at 22% 46%,rgba(120,150,255,.10) 0%,rgba(120,150,255,0) 70%);
+}
+.sec-split > *{position:relative;z-index:1}
+.split-wrap{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:clamp(30px,5vw,80px);align-items:center;
+}
+.hold-stage{
+  position:relative;aspect-ratio:1/1;max-width:min(46vw,430px);
+  display:flex;align-items:center;justify-content:center;
+  --hold:0;
+}
+.hold-btn{
+  position:relative;z-index:3;
+  width:clamp(78px,11.5vw,112px);aspect-ratio:1;border-radius:50%;
+  border:0;cursor:pointer;padding:0;
+  background:#fffdf6;
+  box-shadow:0 0 calc(26px + 120px * var(--hold)) rgba(255,253,246,calc(.35 + .45 * var(--hold)));
+  transform:scale(calc(1 - .12 * var(--hold)));
+  transition:box-shadow .12s linear;
+  touch-action:none;
+}
+.hold-btn span{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:10px;letter-spacing:.14em;color:#2c2419;
+  opacity:calc(1 - var(--hold) * 1.8);
+}
+.hold-rays{
+  position:absolute;inset:-34%;z-index:2;pointer-events:none;
+  overflow:visible;
+}
+/* screen 疊加：光線相交的地方相加變亮，這就是「彼此交疊」 */
+.flare,.spikes,.bloom,.ghosts,.anam{mix-blend-mode:screen}
+
+/* 三圈環繞著中心白光轉，傾角與轉向都不同，所以讀得出立體 */
+.orbits{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  perspective:760px;transform-style:preserve-3d;
+  opacity:calc(var(--hold) * .95);
+}
+.orbits i{
+  position:absolute;left:50%;top:50%;
+  border-radius:50%;
+  border:1.4px solid currentColor;
+  transform-style:preserve-3d;
+  mix-blend-mode:screen;
+}
+.orbits .o1{
+  width:46%;height:46%;margin:-23% 0 0 -23%;color:#8fdcff;
+  animation:orb1 11s linear infinite;
+}
+.orbits .o2{
+  width:68%;height:68%;margin:-34% 0 0 -34%;color:#e3c94a;border-width:1.3px;opacity:.9;
+  animation:orb2 15s linear infinite reverse;
+}
+.orbits .o3{
+  width:92%;height:92%;margin:-46% 0 0 -46%;color:#cf4636;border-width:1.2px;opacity:.78;
+  animation:orb3 21s linear infinite;
+}
+/* 圓形繞自己的法線軸轉，投影完全不變，等於沒動。
+   必須讓環所在的平面翻轉，投影的橢圓才會變形，才看得出來在繞 */
+@keyframes orb1{
+  from{transform:rotateY(0deg)   rotateX(64deg) scale(calc(.4 + .6 * var(--hold)))}
+  to  {transform:rotateY(360deg) rotateX(64deg) scale(calc(.4 + .6 * var(--hold)))}
+}
+@keyframes orb2{
+  from{transform:rotateX(0deg)   rotateZ(32deg) scale(calc(.4 + .6 * var(--hold)))}
+  to  {transform:rotateX(360deg) rotateZ(32deg) scale(calc(.4 + .6 * var(--hold)))}
+}
+@keyframes orb3{
+  from{transform:rotateY(0deg)   rotateZ(-48deg) rotateX(54deg) scale(calc(.4 + .6 * var(--hold)))}
+  to  {transform:rotateY(360deg) rotateZ(-48deg) rotateX(54deg) scale(calc(.4 + .6 * var(--hold)))}
+}
+.ghosts circle{
+  transform-box:view-box;transform-origin:400px 400px;
+  transform:scale(calc(.2 + .8 * var(--hold)));
+  opacity:calc(var(--hold) * var(--hold));
+}
+.anam{
+  transform-box:view-box;transform-origin:400px 400px;
+  transform:scaleX(calc(.05 + .95 * var(--hold)));
+  opacity:calc(var(--hold) * .8);
+}
+.rings circle{
+  transform-box:view-box;transform-origin:400px 400px;
+  transform:scale(calc(.4 + .6 * var(--hold)));
+  opacity:calc(var(--hold) * .9);
+}
+.flare rect{
+  transform-box:view-box;transform-origin:400px 400px;
+  transform:rotate(var(--a)) scaleY(calc(.02 + .98 * var(--hold) * var(--sp,1)));
+  opacity:calc(var(--hold) * .96);
+}
+.spikes rect{
+  transform-box:view-box;transform-origin:400px 400px;
+  transform:rotate(var(--a)) scaleY(calc(.02 + .98 * clamp(0,var(--hold) * 1.5,1)));
+  opacity:calc(clamp(0,var(--hold) * 1.4,1) * .62 * var(--sp,1));
+}
+.bloom{
+  transform-box:view-box;transform-origin:400px 400px;
+  transform:scale(calc(.12 + .88 * var(--hold)));
+  opacity:calc(var(--hold) * .5);
+}
+/* 持續的極緩旋轉。原點必須釘在 viewBox 中心，
+   不然瀏覽器會拿被濾鏡撐大的邊界框中心，光束就不是從那顆光射出來的 */
+.flare,.spikes{transform-box:view-box;transform-origin:400px 400px}
+.flare{animation:flarespin 48s linear infinite}
+.spikes{animation:flarespin 72s linear infinite reverse}
+@keyframes flarespin{to{rotate:360deg}}
+.split-copy .stat{
+  margin-top:clamp(22px,3vw,40px);
+  display:flex;flex-direction:column;gap:10px;
+}
+.prod-pip{
+  display:flex;align-items:baseline;gap:14px;
+  padding:12px 0;border-top:1px solid rgba(44,36,25,.16);
+  opacity:.3;transform:translateX(-8px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease);
+}
+.prod-pip.lit{opacity:1;transform:none}
+.prod-pip .dot{width:12px;height:12px;flex:0 0 auto;border-radius:2px}
+.prod-pip .nm{margin-left:auto}
+.prod-pip .name{font-weight:500;font-size:clamp(16px,1.7vw,22px);letter-spacing:-.01em}
+
+/* ---- 4. Dear Light App ---- */
+.sec-dl .grid{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,78px);
+  margin-top:clamp(38px,5vw,70px);
+  align-items:start;
+}
+.tagline{
+  font-size:clamp(21px,2.7vw,38px);
+  font-weight:500;line-height:1.5;letter-spacing:-.02em;
+  margin:0;max-width:20ch;
+}
+.status{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  padding:6px 12px;border:1px solid currentColor;
+  color:var(--dl-text);
+}
+.status.live{color:var(--gy-gold);border-color:var(--gy-gold)}
+.status .pulse{width:6px;height:6px;border-radius:50%;background:currentColor;
+  position:relative}
+.status .pulse::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:1px solid currentColor;opacity:.55;
+  animation:pulse 4.2s var(--ease-soft) -1.1s infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(.7);opacity:.5}50%{transform:scale(1.35);opacity:0}}
+
+.feats{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.feats li{
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,2.2vw,30px);
+  align-items:start;
+  padding:clamp(20px,2.6vw,32px) 0;
+  border-top:1px solid rgba(44,36,25,.16);
+}
+.feats li:last-child{border-bottom:1px solid rgba(44,36,25,.16)}
+.feats .fig{width:clamp(56px,6vw,84px);flex:0 0 auto}
+.feats h3{font-size:clamp(16px,1.6vw,21px);font-weight:500;letter-spacing:-.01em}
+.feats p{margin:8px 0 0;font-size:14px;line-height:1.8;color:var(--text-soft)}
+.feats .n{
+  font-family:"DM Mono",ui-monospace,monospace;font-size:10px;
+  letter-spacing:.14em;color:var(--dl-text);display:block;margin-bottom:8px;
+}
+.dl-note{
+  margin-top:clamp(26px,3.4vw,44px);
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;line-height:1.9;letter-spacing:.05em;
+  color:var(--text-soft);
+  padding-left:16px;border-left:2px solid var(--dl-gold);
+  max-width:46ch;
+}
+
+/* 北斗七星只在這一區 */
+.dipper{width:100%;height:auto;overflow:visible}
+.dipper .link{
+  stroke:var(--dl-text);stroke-width:1.2;fill:none;opacity:.55;
+  stroke-dasharray:var(--len,340);stroke-dashoffset:var(--len,340);
+  transition:stroke-dashoffset 2.1s var(--ease) .25s;
+}
+.sec-dl.in .dipper .link{stroke-dashoffset:0}
+.dipper circle{fill:var(--dl-text);opacity:0;transition:opacity .55s var(--ease)}
+.sec-dl.in .dipper circle{opacity:1}
+.sec-dl.in .dipper circle:nth-of-type(1){transition-delay:.30s}
+.sec-dl.in .dipper circle:nth-of-type(2){transition-delay:.48s}
+.sec-dl.in .dipper circle:nth-of-type(3){transition-delay:.66s}
+.sec-dl.in .dipper circle:nth-of-type(4){transition-delay:.84s}
+.sec-dl.in .dipper circle:nth-of-type(5){transition-delay:1.02s}
+.sec-dl.in .dipper circle:nth-of-type(6){transition-delay:1.20s}
+.sec-dl.in .dipper circle:nth-of-type(7){transition-delay:1.38s}
+.dipper .glow{
+  fill:var(--dl-gold);opacity:0;
+}
+.sec-dl.in .dipper .glow{animation:starbreathe 6.5s var(--ease-soft) -2s infinite}
+@keyframes starbreathe{0%,100%{opacity:0}50%{opacity:.5}}
+
+/* ---- 5. 歸・有光：亮頁面裡的一座暗島 ---- */
+.sec-gy{
+  /* 印章字體：拿到隸書字檔後把這一行換成 --seal-font:"你的隸書"; 即可 */
+  --seal-font:"LXGW WenKai TC";
+  background:var(--gy-ink);color:var(--text-light);
+  margin-right:calc(var(--pad) * -1);
+  padding-right:calc(var(--pad) * 2);
+}
+.sec-gy .mono{color:#a49279}
+.sec-gy .btn-note{color:#a49279}
+.sec-gy .lede{color:#c8bda9;font-family:"LXGW WenKai TC","Noto Sans TC",serif;font-size:clamp(16px,1.42vw,20px);line-height:2}
+.sec-gy .lede strong{color:var(--text-light)}
+.sec-gy .huge{font-family:"LXGW WenKai TC","Noto Sans TC",serif;font-weight:400;letter-spacing:-.02em}
+.gy-grid{
+  display:grid;grid-template-columns:auto minmax(0,1fr);
+  gap:clamp(28px,5vw,72px);align-items:start;
+  margin-top:clamp(34px,4.6vw,62px);
+}
+.seal{
+  width:clamp(96px,11vw,148px);height:auto;flex:0 0 auto;
+  rotate:-1.6deg;                       /* 真的印不會蓋得完全正 */
+  filter:drop-shadow(0 2px 10px rgba(0,0,0,.45));
+}
+.seal .plate{fill:var(--gy-red)}
+.seal text{
+  fill:#fff;
+  font-family:var(--seal-font,"LXGW WenKai TC"),serif;
+  font-size:31px;letter-spacing:1px;font-weight:400;
+}
+.sec-gy.in .seal{animation:sealpress 1.05s var(--ease) both}
+@keyframes sealpress{
+  0%{transform:scale(1.16) rotate(-4deg);opacity:0}
+  55%{opacity:1}
+  100%{transform:none;opacity:1}
+}
+.gy-glow{
+  position:absolute;left:8%;top:22%;width:min(52vw,600px);aspect-ratio:1;
+  pointer-events:none;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,151,75,.13) 0%,rgba(201,151,75,0) 68%);
+  animation:candle 7.5s var(--ease-soft) -2.4s infinite alternate;
+}
+@keyframes candle{from{opacity:.55;transform:scale(.94)}to{opacity:1;transform:scale(1.06)}}
+
+/* ---- 6. 常見疑問：像文件，不像廣告 ---- */
+.faq{margin-top:clamp(34px,4.6vw,62px);border-top:1px solid rgba(44,36,25,.18)}
+.faq details{border-bottom:1px solid rgba(44,36,25,.18)}
+.faq summary{
+  display:grid;grid-template-columns:auto 1fr auto;gap:clamp(14px,2vw,28px);
+  align-items:baseline;
+  padding:clamp(20px,2.5vw,30px) 0;
+  cursor:pointer;list-style:none;
+  font-size:clamp(15px,1.5vw,20px);font-weight:500;letter-spacing:-.01em;
+  transition:color .35s var(--ease);
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--accent)}
+.faq summary .q{
+  font-family:"DM Mono",ui-monospace,monospace;font-size:11px;
+  letter-spacing:.14em;color:var(--text-soft);
+}
+.faq summary .sign{
+  width:14px;height:14px;position:relative;flex:0 0 auto;align-self:center;
+}
+.faq summary .sign::before,.faq summary .sign::after{
+  content:"";position:absolute;left:0;top:50%;width:14px;height:1.5px;
+  background:currentColor;transition:transform .45s var(--ease);
+}
+.faq summary .sign::after{transform:rotate(90deg)}
+.faq details[open] summary .sign::after{transform:rotate(0)}
+.faq .a{
+  padding:0 0 clamp(24px,3vw,34px);
+  max-width:60ch;
+  margin-left:clamp(30px,4.6vw,74px);
+  font-size:14.5px;line-height:1.95;color:var(--text-soft);
+}
+.faq .a p{margin:0 0 14px}
+.faq .a p:last-child{margin:0}
+
+/* ---- 7. 更多作品：還沒點亮的那一段 ---- */
+.sec-more{padding-top:clamp(52px,7vh,96px);padding-bottom:clamp(52px,7vh,96px)}
+.unlit{
+  display:flex;align-items:center;gap:clamp(18px,3vw,40px);
+  padding:clamp(24px,3.4vw,44px) 0;
+  border-top:1px solid rgba(44,36,25,.18);
+  border-bottom:1px solid rgba(44,36,25,.18);
+}
+.unlit .strip{
+  flex:1;height:14px;
+  background:repeating-linear-gradient(90deg,rgba(44,36,25,.16) 0 2px,transparent 2px 9px);
+}
+.unlit .t{font-size:clamp(17px,1.9vw,26px);font-weight:500;letter-spacing:-.02em;white-space:nowrap}
+
+/* ---- 8. 收尾 ---- */
+.sec-end{padding-bottom:clamp(60px,9vh,120px)}
+.sec-end .huge{margin-bottom:clamp(26px,3.4vw,46px)}
+
+/* ---- 頁尾 ---- */
+footer{
+  position:relative;z-index:10;
+  background:var(--paper);color:var(--text-soft);
+  border-top:1px solid rgba(44,36,25,.18);
+  padding:clamp(34px,4.6vw,58px) var(--pad) clamp(34px,4.6vw,58px) calc(var(--rail-w) + 10px);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;
+  font-family:"DM Mono",ui-monospace,monospace;
+  font-size:11px;letter-spacing:.12em;line-height:1.9;
+}
+footer .sig{font-family:"Syne",sans-serif;font-weight:800;font-size:15px;letter-spacing:.06em;color:var(--text)}
+
+/* ============ 進場編排 ============ */
+.rise{opacity:0;transform:translateY(26px)}
+.in .rise,.rise.in{opacity:1;transform:none;
+  transition:opacity .95s var(--ease),transform .95s var(--ease)}
+.in .rise:nth-child(1){transition-delay:0ms}
+.in .rise:nth-child(2){transition-delay:90ms}
+.in .rise:nth-child(3){transition-delay:180ms}
+.in .rise:nth-child(4){transition-delay:270ms}
+.in .rise:nth-child(5){transition-delay:360ms}
+.entered .rise:nth-child(1),.entered .rise:nth-child(2),.entered .rise:nth-child(3),
+.entered .rise:nth-child(4),.entered .rise:nth-child(5){transition-delay:0s !important}
+
+/* 分頁隱藏或區塊離開畫面時，所有動畫停住 */
+body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused !important}
+
+/* ============================================================
+   靜態開場的五個條件。這五條字串在 CSS 和 JS 裡必須一字不差
+   ============================================================ */
+@media (max-width: 720px){
+  .hero{display:none}
+  .static-hero{display:flex}
+  .rail{display:none}
+  section,footer{padding-left:var(--pad)}
+}
+@media (orientation: portrait) and (max-width: 1024px){
+  .hero{display:none}
+  .static-hero{display:flex}
+}
+@media (orientation: portrait) and (pointer: coarse){
+  .hero{display:none}
+  .static-hero{display:flex}
+}
+@media (orientation: landscape) and (pointer: coarse) and (max-height: 560px){
+  .hero{display:none}
+  .static-hero{display:flex}
+}
+@media (prefers-reduced-motion: reduce){
+  .hero{display:none}
+  .static-hero{display:flex}
+}
+
+/* 螢幕矮但還是滾動版：小的滾動裝飾沒有空間 */
+@media (max-height:560px){
+  .cue{display:none}
+  .rail-read{display:none}
+}
+
+/* 平板與中等寬度 */
+@media (max-width:1080px){
+  .split-wrap{grid-template-columns:1fr;gap:clamp(34px,6vw,54px)}
+  .hold-stage{max-width:min(86vw,420px);margin-inline:auto}
+  .hold-rays{inset:-70%}
+  .sec-dl .grid{grid-template-columns:1fr}
+  .gy-grid{grid-template-columns:1fr}
+  .seal{width:110px}
+}
+@media (max-width:720px){
+  :root{--pad:20px}
+  .swatches{grid-template-columns:repeat(7,1fr);margin-right:calc(var(--pad) * -1)}
+  .sw{height:88px}
+  .sw .lab{font-size:8px}
+  .doc-cols{grid-template-columns:1fr;gap:22px}
+  .huge{font-size:clamp(34px,12.4vw,62px);letter-spacing:-.04em;margin-left:-.04em}
+  .huge.bleed-l{margin-left:-.06em}
+  .nav-links{display:none}
+  .nav{padding-left:var(--pad)}
+  footer{flex-direction:column;align-items:flex-start}
+  .unlit{flex-wrap:wrap}
+  .unlit .t{white-space:normal}
+}
+
+/* ============================================================
+   關閉動效：完整尊重，最終狀態全部顯示
+   ============================================================ */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    transition-delay:0s !important;
+    scroll-behavior:auto !important;
+  }
+  .rise{opacity:1;transform:none}
+  .sw i{transform:scaleY(1)}
+  .sw .lab{opacity:.9}
+  .dipper .link{stroke-dashoffset:0}
+  .dipper circle{opacity:1}
+  .prod-pip{opacity:1;transform:none}
+  .hold-stage{--hold:1}
+  .env{animation:none}
+}
+
+/* ============================================================
+   開場：夜空 → 流星 → 進入流星視角俯瞰雲層 → 回第三人稱 → 穿雲變七彩
+   零圖片。雲是 SVG 碎形雜訊程序生成的。
+   效能上的硬規則：雜訊參數絕不做動畫（那會每一幀重算整張濾鏡），
+   只對算好的紋理做位移與 3D 旋轉。
+   ============================================================ */
+.stage{
+  --stars:0;--travel:0;--swing:0;--dive:0;--pov:0;--exit:0;--impact:0;--flash:0;--spread:0;
+}
+.scene{position:absolute;inset:0;width:100%;height:100%}
+
+.stage::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(120% 80% at 50% 12%,#1b2450 0%,#0e1329 46%,#070a18 100%);
+}
+
+/* ---- 星空。三層視差，流星不動，星星從它身邊流過去 ---- */
+.sky{
+  z-index:1;
+  opacity:calc(var(--stars) * (1 - var(--dive) * .55) * (1 - var(--pov) * .9));
+  transform-box:view-box;transform-origin:800px 450px;
+  transform:rotate(calc(var(--swing) * -19deg)) scale(calc(1 + .30 * var(--swing)));
+}
+.stars{transform-box:view-box}
+.s-far {transform:translate(calc(var(--travel) *  190px),calc(var(--travel) * -190px))}
+.s-mid {transform:translate(calc(var(--travel) *  430px),calc(var(--travel) * -430px))}
+.s-near{transform:translate(calc(var(--travel) *  920px),calc(var(--travel) * -920px))}
+.tw{animation:twinkle 4.2s var(--ease-soft) infinite alternate;animation-delay:var(--td,0s)}
+@keyframes twinkle{from{opacity:.25}to{opacity:1}}
+
+/* ---- 雲層：真的 3D 平面 ---- */
+.stage .cloudstage{display:none}
+.stage.has-cloud .cloudstage{display:block}
+.stage .iri{display:none}
+.stage.has-iri .iri{display:block}
+.cloudstage{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  /* 透視距離必須遠大於平面近端的 Z，否則近端會穿過攝影機被裁掉 */
+  perspective:2600px;perspective-origin:50% 42%;
+  opacity:var(--dive);
+  transform:translateY(calc(var(--exit) * -125%));
+}
+.cloudplane{
+  position:absolute;left:-52%;right:-52%;top:44%;height:132%;
+  transform-origin:50% 0%;
+  /* 先轉成地平面，再在父層空間上下推。不用 translateZ，避免近端衝過攝影機 */
+  /* --pov 是「我們就是流星」的那一段：地平線被推到畫面上緣，
+     鏡頭幾乎垂直往下看，底下全部是雲 */
+  transform:
+    translateY(calc(var(--dive) * -9% - var(--pov) * 34%))
+    rotateX(calc(77deg - 17deg * var(--dive) - 15deg * var(--pov)));
+}
+.cloudplane svg{width:100%;height:100%;display:block}
+.cl-a{opacity:.8;transform:translateY(calc(var(--dive) * -3%))}
+.cl-b{opacity:.55;transform:translateY(calc(var(--dive) * -7%))}
+/* 穿過去那一刻，雲自己變成虹彩 */
+.iri{
+  opacity:calc(var(--impact) * 1.0 * (1 - var(--exit) * .85));
+  mix-blend-mode:screen;
+}
+
+/* ---- 流星 ---- */
+.sky-top{
+  z-index:4;
+  transform:translateY(calc(var(--exit) * -118%));
+}
+.wash{z-index:3}
+.landing{z-index:5}
+.band{z-index:6}
+/* 光球全程留在畫面正中。鏡頭繞到它後面時，尾巴會轉向並縮短
+   （因為我們正從它的側後方看它），這才是鏡頭在動，不是特效在動 */
+.meteor{
+  transform-box:view-box;transform-origin:800px 450px;
+  transform:translate(0,30px) scale(calc(.55 + .45 * var(--stars)));
+  opacity:calc(var(--stars) * (1 - var(--impact)));
+  filter:url(#mSoft);
+}
+.meteor .head{filter:none}
+.meteor .trail{
+  transform-box:view-box;transform-origin:800px 420px;
+  transform:rotate(calc(var(--swing) * 30deg)) scale(calc(1 - .58 * var(--swing)));
+  opacity:calc(1 - var(--swing) * .35);
+}
+
+/* ---- 穿雲那一刻散出來的七彩 ---- */
+.hit{
+  transform-box:view-box;transform-origin:800px 480px;
+  transform:scale(calc(.1 + 1.5 * var(--impact)));
+  opacity:calc(var(--impact) * (1 - var(--spread) * .5) * .9);
+  mix-blend-mode:screen;
+}
+.burst rect{
+  transform-box:view-box;transform-origin:800px 480px;
+  transform:rotate(var(--a)) scaleY(calc(.02 + .98 * var(--spread)));
+  opacity:calc(var(--spread) * .95 * (1 - var(--exit) * .5));
+  mix-blend-mode:screen;
+}
+.burst{transform-box:view-box;transform-origin:800px 480px;
+  transform:scale(calc(.7 + .55 * var(--spread)))}
+.flash{opacity:calc(var(--flash) * .74)}
+
+/* ---- 落地：光變成顏料，名字跟它穿梭 ---- */
+.landing{
+  position:absolute;left:0;right:0;top:26%;
+  transform:translateY(calc((1 - var(--exit)) * 101%));
+  height:clamp(110px,19vh,210px);
+  pointer-events:none;
+}
+/* 色譜條：七段各自不同高度，而且輕微起伏，所以不呆板。
+   共用同一條底線，下面的波長標籤才對得齊 */
+.landing .bar{
+  position:absolute;left:var(--pad);right:var(--pad);
+  top:44%;bottom:auto;
+  height:clamp(46px,8.2vh,96px);
+  display:flex;align-items:flex-end;
+  z-index:5;
+  transform:scaleX(calc(.1 + .9 * var(--bar)));
+  transform-origin:50% 50%;
+  opacity:var(--bar);
+}
+.landing .bar i{
+  flex:1;height:100%;
+  transform-origin:50% 100%;
+  transform:scaleY(calc(var(--sh,.8) * var(--bar)));
+  animation:seg 7.5s var(--ease-soft) infinite alternate;
+}
+.landing .bar i:nth-child(1){--sh:.52;animation-delay:0s}
+.landing .bar i:nth-child(2){--sh:.68;margin-bottom:24px;animation-delay:-1.1s}
+.landing .bar i:nth-child(3){--sh:.40;margin-bottom:24px;animation-delay:-2.3s}
+.landing .bar i:nth-child(4){--sh:.86;animation-delay:-3.4s}
+.landing .bar i:nth-child(5){--sh:.58;animation-delay:-4.6s}
+.landing .bar i:nth-child(6){--sh:.94;animation-delay:-5.2s}
+.landing .bar i:nth-child(7){--sh:.72;animation-delay:-6.4s}
+@keyframes seg{from{translate:0 0}to{translate:0 -7%}}
+.landing .bar-labels{
+  position:absolute;left:var(--pad);right:var(--pad);
+  top:calc(44% + clamp(46px,8.2vh,96px) + 7px);bottom:auto;
+  z-index:5;
+  opacity:calc(var(--bar) * var(--bar));
+}
+.wordmark{
+  position:absolute;left:0;right:0;top:0;bottom:0;
+  display:flex;justify-content:flex-start;align-items:center;
+  padding-left:calc(var(--rail-w) + 10px);
+  font-family:"Syne",sans-serif;font-weight:800;
+  font-size:clamp(38px,7.2vw,118px);
+  letter-spacing:-.05em;line-height:1;
+  color:var(--text);
+  white-space:nowrap;
+}
+.wordmark .lt{
+  --kw:clamp(0,(var(--word,0) - var(--i,0) * .055) * 3.4,1);
+  display:inline-block;
+  opacity:var(--kw);
+  position:relative;
+}
+/* 有些字母在色譜條前面，有些在後面。這就是「穿梭」 */
+/* 字上下拉長，色譜條才蓋不掉下半部 */
+.wordmark .lt{transform-origin:50% 64%}
+.wordmark .l0{z-index:8;transform:translateX(calc((1 - var(--kw)) * -62vw)) scaleY(1.44)}
+.wordmark .l1{z-index:2;transform:translateX(calc((1 - var(--kw)) * 62vw)) scaleY(1.44)}
+
+/* 收尾的字往下挪，讓出名字穿梭的位置 */
+.b-settle{top:auto;bottom:9vh;transform:none}
+.b-settle .huge{font-size:clamp(28px,5.2vw,86px)}
+
+/* 手繪版不需要照片相關的東西 */
+.photo,.fan,.scrim{display:none !important}
+
+@media (max-width:1080px){
+  .landing{top:28%}
+  .wordmark{font-size:clamp(32px,8.6vw,84px);padding-left:var(--pad)}
+}
+
+
+/* ============================================================
+   移除開場電影（review/no-opening 專用的唯一改動）
+   兩個開場都不顯示，頁面直接從 .sec-team 開始 —— 版面完全等於昨天那版。
+   第一幕的 DOM 原封不動留著，只是不顯示、也不再跑 scrub。
+   .rise 彈出動畫用自己的 IntersectionObserver，不受影響。
+   要還原：刪掉這個區塊，並移除 GATES 裡的 '(min-width: 0px)'。
+   ============================================================ */
+.hero{display:none !important}
+.static-hero{display:none !important}   /* 靜態開場是另一套直式構圖，用了版面會跟昨天不一樣 */
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">跳到主要內容</a>
+
+<div class="env" aria-hidden="true"></div>
+
+<!-- 招牌元素：光譜軸 -->
+<div class="rail" aria-hidden="true">
+  <div class="rail-line">
+    <div class="rail-mark"></div>
+    <div class="rail-read">FULL SPECTRUM</div>
+  </div>
+</div>
+
+<!-- ============ 第一幕：跟著光往下走 ============ -->
+<nav class="nav" aria-label="主要導覽">
+  <a class="nav-mark" href="#top">DEAR LIGHT</a>
+  <div class="nav-links">
+    <a href="#dearlight">Dear Light App</a>
+    <a href="#guiyouguang">歸・有光</a>
+    <a href="#faq">常見疑問</a>
+  </div>
+</nav>
+
+<div class="hero" id="hero">
+  <div class="hero-track" id="track">
+    <div class="stage" id="stage">
+      <!-- 夜空與星 -->
+      <svg class="scene sky" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g class="stars s-far">
+          <circle cx="1070" cy="337" r="1.11" fill="#c3d0ec" opacity="0.24"/>
+          <circle cx="846" cy="326" r="0.61" fill="#c3d0ec" opacity="0.29"/>
+          <circle class="tw" style="--td:3.90s" cx="340" cy="189" r="1.29" fill="#c3d0ec" opacity="0.19"/>
+          <circle class="tw" style="--td:5.30s" cx="1103" cy="84" r="0.74" fill="#c3d0ec" opacity="0.23"/>
+          <circle cx="335" cy="703" r="1.19" fill="#c3d0ec" opacity="0.32"/>
+          <circle class="tw" style="--td:0.55s" cx="1384" cy="398" r="1.27" fill="#c3d0ec" opacity="0.19"/>
+          <circle cx="1364" cy="47" r="1.21" fill="#c3d0ec" opacity="0.15"/>
+          <circle cx="570" cy="573" r="0.9" fill="#c3d0ec" opacity="0.27"/>
+          <circle cx="984" cy="483" r="1.19" fill="#c3d0ec" opacity="0.32"/>
+          <circle class="tw" style="--td:0.97s" cx="1384" cy="778" r="0.68" fill="#c3d0ec" opacity="0.28"/>
+          <circle cx="1394" cy="62" r="0.92" fill="#c3d0ec" opacity="0.18"/>
+          <circle cx="550" cy="579" r="0.99" fill="#c3d0ec" opacity="0.15"/>
+          <circle cx="54" cy="164" r="1.25" fill="#c3d0ec" opacity="0.24"/>
+          <circle class="tw" style="--td:3.59s" cx="642" cy="622" r="0.69" fill="#c3d0ec" opacity="0.23"/>
+          <circle cx="1094" cy="336" r="0.96" fill="#c3d0ec" opacity="0.18"/>
+          <circle cx="1320" cy="65" r="1.07" fill="#c3d0ec" opacity="0.20"/>
+          <circle cx="1484" cy="299" r="0.64" fill="#c3d0ec" opacity="0.31"/>
+          <circle cx="-24" cy="122" r="0.74" fill="#c3d0ec" opacity="0.34"/>
+          <circle class="tw" style="--td:3.94s" cx="1577" cy="364" r="0.7" fill="#c3d0ec" opacity="0.19"/>
+          <circle class="tw" style="--td:5.29s" cx="957" cy="-35" r="0.96" fill="#c3d0ec" opacity="0.19"/>
+          <circle cx="993" cy="214" r="0.97" fill="#c3d0ec" opacity="0.25"/>
+          <circle cx="753" cy="191" r="0.96" fill="#c3d0ec" opacity="0.15"/>
+          <circle cx="785" cy="100" r="1.24" fill="#c3d0ec" opacity="0.17"/>
+          <circle cx="1443" cy="815" r="0.77" fill="#c3d0ec" opacity="0.27"/>
+          <circle cx="276" cy="334" r="0.72" fill="#c3d0ec" opacity="0.25"/>
+          <circle class="tw" style="--td:3.46s" cx="184" cy="247" r="1.01" fill="#c3d0ec" opacity="0.19"/>
+          <circle cx="438" cy="732" r="0.84" fill="#c3d0ec" opacity="0.21"/>
+          <circle cx="948" cy="53" r="1.28" fill="#c3d0ec" opacity="0.24"/>
+          <circle cx="619" cy="902" r="0.68" fill="#c3d0ec" opacity="0.28"/>
+          <circle cx="1611" cy="30" r="1.13" fill="#c3d0ec" opacity="0.22"/>
+          <circle cx="815" cy="651" r="1.29" fill="#c3d0ec" opacity="0.25"/>
+          <circle class="tw" style="--td:4.25s" cx="918" cy="634" r="1.01" fill="#c3d0ec" opacity="0.23"/>
+          <circle cx="524" cy="417" r="1.29" fill="#c3d0ec" opacity="0.22"/>
+          <circle cx="356" cy="62" r="0.67" fill="#c3d0ec" opacity="0.27"/>
+          <circle cx="550" cy="748" r="0.61" fill="#c3d0ec" opacity="0.25"/>
+          <circle cx="1291" cy="216" r="1.19" fill="#c3d0ec" opacity="0.25"/>
+          <circle cx="1508" cy="139" r="1.28" fill="#c3d0ec" opacity="0.33"/>
+          <circle class="tw" style="--td:2.20s" cx="121" cy="625" r="0.91" fill="#c3d0ec" opacity="0.32"/>
+          <circle cx="192" cy="364" r="0.8" fill="#c3d0ec" opacity="0.28"/>
+          <circle cx="0" cy="325" r="0.89" fill="#c3d0ec" opacity="0.19"/>
+          <circle cx="-31" cy="483" r="1.11" fill="#c3d0ec" opacity="0.15"/>
+          <circle cx="1283" cy="522" r="0.98" fill="#c3d0ec" opacity="0.19"/>
+          <circle class="tw" style="--td:5.93s" cx="195" cy="562" r="1.29" fill="#c3d0ec" opacity="0.17"/>
+          <circle cx="1064" cy="721" r="1.01" fill="#c3d0ec" opacity="0.23"/>
+          <circle cx="617" cy="899" r="0.89" fill="#c3d0ec" opacity="0.25"/>
+          <circle class="tw" style="--td:5.75s" cx="850" cy="827" r="0.91" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="1477" cy="693" r="0.77" fill="#c3d0ec" opacity="0.26"/>
+          <circle cx="-34" cy="293" r="0.65" fill="#c3d0ec" opacity="0.32"/>
+          <circle cx="151" cy="312" r="0.92" fill="#c3d0ec" opacity="0.33"/>
+          <circle class="tw" style="--td:4.72s" cx="847" cy="36" r="0.98" fill="#c3d0ec" opacity="0.23"/>
+          <circle cx="507" cy="617" r="1.3" fill="#c3d0ec" opacity="0.28"/>
+          <circle class="tw" style="--td:2.87s" cx="1493" cy="-13" r="0.74" fill="#c3d0ec" opacity="0.29"/>
+          <circle class="tw" style="--td:3.70s" cx="701" cy="751" r="1.24" fill="#c3d0ec" opacity="0.28"/>
+          <circle class="tw" style="--td:2.50s" cx="417" cy="931" r="1.21" fill="#c3d0ec" opacity="0.30"/>
+          <circle cx="1240" cy="17" r="0.76" fill="#c3d0ec" opacity="0.16"/>
+          <circle cx="665" cy="754" r="1.01" fill="#c3d0ec" opacity="0.32"/>
+          <circle cx="716" cy="615" r="0.77" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="-14" cy="148" r="0.65" fill="#c3d0ec" opacity="0.29"/>
+          <circle class="tw" style="--td:5.76s" cx="1146" cy="372" r="1.19" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="844" cy="477" r="0.89" fill="#c3d0ec" opacity="0.20"/>
+          <circle class="tw" style="--td:5.33s" cx="1422" cy="932" r="0.98" fill="#c3d0ec" opacity="0.20"/>
+          <circle class="tw" style="--td:2.16s" cx="678" cy="672" r="0.72" fill="#c3d0ec" opacity="0.22"/>
+          <circle cx="41" cy="161" r="0.7" fill="#c3d0ec" opacity="0.18"/>
+          <circle cx="155" cy="845" r="1.17" fill="#c3d0ec" opacity="0.30"/>
+          <circle cx="857" cy="720" r="0.96" fill="#c3d0ec" opacity="0.29"/>
+          <circle cx="1520" cy="524" r="0.89" fill="#c3d0ec" opacity="0.19"/>
+          <circle cx="1477" cy="262" r="0.67" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="1319" cy="152" r="1.19" fill="#c3d0ec" opacity="0.32"/>
+          <circle cx="1125" cy="826" r="0.69" fill="#c3d0ec" opacity="0.24"/>
+          <circle class="tw" style="--td:2.38s" cx="548" cy="480" r="0.86" fill="#c3d0ec" opacity="0.18"/>
+          <circle cx="1613" cy="-34" r="0.87" fill="#c3d0ec" opacity="0.17"/>
+          <circle cx="1426" cy="45" r="0.72" fill="#c3d0ec" opacity="0.34"/>
+          <circle cx="1368" cy="323" r="1.22" fill="#c3d0ec" opacity="0.20"/>
+          <circle class="tw" style="--td:2.57s" cx="658" cy="531" r="0.92" fill="#c3d0ec" opacity="0.29"/>
+          <circle cx="667" cy="700" r="0.95" fill="#c3d0ec" opacity="0.30"/>
+          <circle cx="214" cy="726" r="0.68" fill="#c3d0ec" opacity="0.20"/>
+          <circle cx="650" cy="97" r="0.71" fill="#c3d0ec" opacity="0.33"/>
+          <circle class="tw" style="--td:1.06s" cx="395" cy="643" r="0.83" fill="#c3d0ec" opacity="0.19"/>
+          <circle cx="1543" cy="739" r="1.2" fill="#c3d0ec" opacity="0.27"/>
+          <circle cx="217" cy="268" r="1.23" fill="#c3d0ec" opacity="0.22"/>
+          <circle class="tw" style="--td:1.71s" cx="1411" cy="706" r="0.9" fill="#c3d0ec" opacity="0.20"/>
+          <circle cx="624" cy="413" r="0.94" fill="#c3d0ec" opacity="0.34"/>
+          <circle cx="552" cy="394" r="0.82" fill="#c3d0ec" opacity="0.24"/>
+          <circle class="tw" style="--td:4.64s" cx="1458" cy="244" r="1.23" fill="#c3d0ec" opacity="0.19"/>
+          <circle cx="1509" cy="795" r="1.15" fill="#c3d0ec" opacity="0.23"/>
+          <circle cx="652" cy="886" r="0.63" fill="#c3d0ec" opacity="0.18"/>
+          <circle class="tw" style="--td:2.00s" cx="1448" cy="463" r="1.06" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="617" cy="365" r="0.9" fill="#c3d0ec" opacity="0.27"/>
+          <circle cx="63" cy="695" r="0.97" fill="#c3d0ec" opacity="0.24"/>
+          <circle cx="369" cy="455" r="0.85" fill="#c3d0ec" opacity="0.30"/>
+        </g>
+        <g class="stars s-mid">
+          <circle cx="66" cy="437" r="1.84" fill="#c3d0ec" opacity="0.29"/>
+          <circle cx="512" cy="882" r="1.5" fill="#c3d0ec" opacity="0.45"/>
+          <circle class="tw" style="--td:1.97s" cx="677" cy="511" r="1.66" fill="#c3d0ec" opacity="0.38"/>
+          <circle cx="1230" cy="148" r="1.52" fill="#c3d0ec" opacity="0.32"/>
+          <circle cx="1036" cy="44" r="1.81" fill="#c3d0ec" opacity="0.34"/>
+          <circle cx="901" cy="928" r="1.09" fill="#c3d0ec" opacity="0.31"/>
+          <circle cx="539" cy="610" r="1.88" fill="#c3d0ec" opacity="0.25"/>
+          <circle cx="1092" cy="465" r="1.21" fill="#c3d0ec" opacity="0.27"/>
+          <circle cx="52" cy="224" r="1.05" fill="#c3d0ec" opacity="0.39"/>
+          <circle cx="664" cy="42" r="1.59" fill="#c3d0ec" opacity="0.38"/>
+          <circle cx="614" cy="168" r="1.67" fill="#c3d0ec" opacity="0.28"/>
+          <circle cx="789" cy="186" r="1.4" fill="#c3d0ec" opacity="0.44"/>
+          <circle cx="1458" cy="742" r="1.72" fill="#c3d0ec" opacity="0.43"/>
+          <circle cx="578" cy="421" r="1.28" fill="#c3d0ec" opacity="0.42"/>
+          <circle cx="1002" cy="270" r="1.2" fill="#c3d0ec" opacity="0.27"/>
+          <circle cx="530" cy="123" r="1.63" fill="#c3d0ec" opacity="0.26"/>
+          <circle cx="113" cy="890" r="1.49" fill="#c3d0ec" opacity="0.39"/>
+          <circle cx="788" cy="320" r="1.47" fill="#c3d0ec" opacity="0.45"/>
+          <circle cx="814" cy="156" r="1.15" fill="#c3d0ec" opacity="0.35"/>
+          <circle cx="870" cy="854" r="1.43" fill="#c3d0ec" opacity="0.32"/>
+          <circle cx="668" cy="259" r="1.18" fill="#c3d0ec" opacity="0.38"/>
+          <circle cx="1521" cy="349" r="1.78" fill="#c3d0ec" opacity="0.30"/>
+          <circle cx="1524" cy="672" r="1.78" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="778" cy="924" r="1.78" fill="#c3d0ec" opacity="0.46"/>
+          <circle class="tw" style="--td:0.85s" cx="15" cy="352" r="1.43" fill="#c3d0ec" opacity="0.30"/>
+          <circle cx="394" cy="415" r="1.02" fill="#c3d0ec" opacity="0.41"/>
+          <circle cx="1516" cy="-40" r="1.7" fill="#c3d0ec" opacity="0.46"/>
+          <circle cx="816" cy="316" r="1.3" fill="#c3d0ec" opacity="0.35"/>
+          <circle cx="1591" cy="537" r="1.35" fill="#c3d0ec" opacity="0.40"/>
+          <circle cx="1063" cy="851" r="1.86" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="111" cy="244" r="1.19" fill="#c3d0ec" opacity="0.24"/>
+          <circle cx="973" cy="795" r="1.81" fill="#c3d0ec" opacity="0.27"/>
+          <circle class="tw" style="--td:0.71s" cx="340" cy="172" r="1.36" fill="#c3d0ec" opacity="0.40"/>
+          <circle cx="993" cy="807" r="1.22" fill="#c3d0ec" opacity="0.43"/>
+          <circle cx="1616" cy="784" r="1.68" fill="#c3d0ec" opacity="0.24"/>
+          <circle cx="117" cy="797" r="1.05" fill="#c3d0ec" opacity="0.43"/>
+          <circle cx="1158" cy="690" r="1.49" fill="#c3d0ec" opacity="0.36"/>
+          <circle cx="612" cy="282" r="1.14" fill="#c3d0ec" opacity="0.26"/>
+          <circle cx="1123" cy="632" r="1.66" fill="#c3d0ec" opacity="0.44"/>
+          <circle cx="145" cy="311" r="1.15" fill="#c3d0ec" opacity="0.42"/>
+          <circle cx="795" cy="892" r="1.02" fill="#c3d0ec" opacity="0.44"/>
+          <circle class="tw" style="--td:0.30s" cx="1137" cy="51" r="1.24" fill="#c3d0ec" opacity="0.46"/>
+          <circle cx="396" cy="44" r="1.45" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="1200" cy="646" r="1.12" fill="#c3d0ec" opacity="0.37"/>
+          <circle cx="1076" cy="567" r="1.61" fill="#c3d0ec" opacity="0.46"/>
+          <circle class="tw" style="--td:2.39s" cx="1180" cy="488" r="1.57" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="1302" cy="513" r="1.73" fill="#c3d0ec" opacity="0.45"/>
+          <circle cx="1387" cy="360" r="1.03" fill="#c3d0ec" opacity="0.24"/>
+          <circle cx="621" cy="395" r="1.23" fill="#c3d0ec" opacity="0.30"/>
+          <circle cx="1625" cy="40" r="1.88" fill="#c3d0ec" opacity="0.33"/>
+          <circle cx="171" cy="138" r="1.63" fill="#c3d0ec" opacity="0.35"/>
+          <circle cx="4" cy="601" r="1.44" fill="#c3d0ec" opacity="0.39"/>
+        </g>
+        <g class="stars s-near">
+          <circle cx="1230" cy="813" r="1.74" fill="#c3d0ec" opacity="0.53"/>
+          <circle class="tw" style="--td:5.11s" cx="1619" cy="57" r="1.97" fill="#c3d0ec" opacity="0.48"/>
+          <circle cx="348" cy="239" r="2.43" fill="#c3d0ec" opacity="0.59"/>
+          <circle cx="447" cy="340" r="2.03" fill="#c3d0ec" opacity="0.52"/>
+          <circle cx="318" cy="3" r="2.56" fill="#c3d0ec" opacity="0.28"/>
+          <circle cx="1110" cy="642" r="2.48" fill="#c3d0ec" opacity="0.56"/>
+          <circle cx="846" cy="677" r="2.59" fill="#c3d0ec" opacity="0.58"/>
+          <circle cx="1155" cy="680" r="2.5" fill="#c3d0ec" opacity="0.38"/>
+          <circle class="tw" style="--td:0.68s" cx="1345" cy="763" r="2.14" fill="#c3d0ec" opacity="0.36"/>
+          <circle class="tw" style="--td:0.70s" cx="1503" cy="252" r="2.72" fill="#c3d0ec" opacity="0.40"/>
+          <circle cx="327" cy="467" r="2.66" fill="#c3d0ec" opacity="0.31"/>
+          <circle class="tw" style="--td:1.74s" cx="245" cy="155" r="1.69" fill="#c3d0ec" opacity="0.51"/>
+          <circle cx="1257" cy="705" r="2.54" fill="#c3d0ec" opacity="0.29"/>
+          <circle cx="1368" cy="351" r="2.19" fill="#c3d0ec" opacity="0.30"/>
+          <circle cx="1479" cy="94" r="2.73" fill="#c3d0ec" opacity="0.48"/>
+          <circle cx="206" cy="358" r="2.28" fill="#c3d0ec" opacity="0.45"/>
+          <circle class="tw" style="--td:2.81s" cx="609" cy="706" r="2.43" fill="#c3d0ec" opacity="0.46"/>
+          <circle cx="1282" cy="330" r="2.39" fill="#c3d0ec" opacity="0.54"/>
+          <circle cx="1424" cy="844" r="2.7" fill="#c3d0ec" opacity="0.32"/>
+          <circle cx="1098" cy="477" r="2.15" fill="#c3d0ec" opacity="0.42"/>
+          <circle cx="488" cy="748" r="1.81" fill="#c3d0ec" opacity="0.48"/>
+          <circle cx="1191" cy="616" r="2.25" fill="#c3d0ec" opacity="0.27"/>
+          <circle class="tw" style="--td:0.35s" cx="1448" cy="538" r="2.77" fill="#c3d0ec" opacity="0.41"/>
+          <circle cx="1578" cy="819" r="2.49" fill="#c3d0ec" opacity="0.50"/>
+        </g>
+      </svg>
+
+      <!-- 雲層。真正的 3D 平面，靠透視推進；雲是程序生成的碎形雜訊，不是圖片 -->
+      <div class="cloudstage" aria-hidden="true">
+        <div class="cloudplane">
+          <svg viewBox="0 0 1600 1200" preserveAspectRatio="none">
+            <defs>
+              <filter id="cloudA" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.0052 0.0078" numOctaves="3" seed="7" result="n"/>
+                <feColorMatrix in="n" type="matrix"
+                  values="0 0 0 0 .80  0 0 0 0 .86  0 0 0 0 1  0 0 0 -1.55 1.02"/>
+              </filter>
+              <filter id="cloudB" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.0115 0.0150" numOctaves="3" seed="21" result="n"/>
+                <feColorMatrix in="n" type="matrix"
+                  values="0 0 0 0 .60  0 0 0 0 .70  0 0 0 0 .95  0 0 0 -1.75 .92"/>
+              </filter>
+              <linearGradient id="cfade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0"    stop-color="#fff" stop-opacity="0"/>
+                <stop offset=".10"  stop-color="#fff" stop-opacity="0.22"/>
+                <stop offset=".34"  stop-color="#fff" stop-opacity="1"/>
+                <stop offset=".82"  stop-color="#fff" stop-opacity="0.57"/>
+                <stop offset="1"    stop-color="#fff" stop-opacity="0.37"/>
+              </linearGradient>
+              <mask id="cmask">
+                <rect x="-100" y="0" width="1800" height="1200" fill="url(#cfade)"/>
+              </mask>
+              <radialGradient id="iriRad" cx=".44" cy=".345" r=".30">
+                <stop offset="0"   stop-color="#fff" stop-opacity="1"/>
+                <stop offset=".45" stop-color="#fff" stop-opacity="0.38"/>
+                <stop offset="1"   stop-color="#fff" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="irimask">
+                <rect x="-100" y="0" width="1800" height="1200" fill="url(#iriRad)"/>
+              </mask>
+              <radialGradient id="iriG" cx=".44" cy=".345" r=".30">
+                <stop offset="0"   stop-color="#ffffff"/>
+                <stop offset=".14" stop-color="#fff3c4"/>
+                <stop offset=".26" stop-color="#e3c94a"/>
+                <stop offset=".38" stop-color="#e08a3c"/>
+                <stop offset=".48" stop-color="#cf4636"/>
+                <stop offset=".60" stop-color="#6a4fd0"/>
+                <stop offset=".71" stop-color="#3b6fe0"/>
+                <stop offset=".82" stop-color="#35b8c9"/>
+                <stop offset=".92" stop-color="#57bf6a"/>
+                <stop offset="1"   stop-color="#57bf6a" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="iriCut" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.0075 0.0110" numOctaves="3" seed="13" result="n"/>
+                <feColorMatrix in="n" type="luminanceToAlpha" result="a"/>
+                <feComposite in="SourceGraphic" in2="a" operator="in"/>
+              </filter>
+            </defs>
+            <g mask="url(#cmask)">
+              <rect class="cl-a" x="-100" y="0" width="1800" height="1200" fill="#fff" filter="url(#cloudA)"/>
+              <rect class="cl-b" x="-100" y="80" width="1800" height="1120" fill="#fff" filter="url(#cloudB)"/>
+            </g>
+            <g mask="url(#irimask)">
+              <rect class="iri" x="-100" y="0" width="1800" height="1200" fill="url(#iriG)" filter="url(#iriCut)"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 流星、穿雲之後的光譜、閃光 -->
+      <svg class="scene sky-top" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <radialGradient id="headG">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="1"/>
+            <stop offset=".25" stop-color="#fff2d8" stop-opacity="0.43"/>
+            <stop offset="1"   stop-color="#ffd9a0" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="trailG" gradientUnits="userSpaceOnUse" x1="800" y1="420" x2="1330" y2="-110">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#e6efff" stop-opacity="0.34"/>
+            <stop offset=".48" stop-color="#a8c6ff" stop-opacity="0.11"/>
+            <stop offset="1"   stop-color="#a8c6ff" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="bray0" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#6a4fd0" stop-opacity="0.50"/>
+            <stop offset=".62" stop-color="#6a4fd0" stop-opacity="0.26"/>
+            <stop offset="1"   stop-color="#6a4fd0" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="bray1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#3b6fe0" stop-opacity="0.50"/>
+            <stop offset=".62" stop-color="#3b6fe0" stop-opacity="0.26"/>
+            <stop offset="1"   stop-color="#3b6fe0" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="bray2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#35b8c9" stop-opacity="0.50"/>
+            <stop offset=".62" stop-color="#35b8c9" stop-opacity="0.26"/>
+            <stop offset="1"   stop-color="#35b8c9" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="bray3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#57bf6a" stop-opacity="0.50"/>
+            <stop offset=".62" stop-color="#57bf6a" stop-opacity="0.26"/>
+            <stop offset="1"   stop-color="#57bf6a" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="bray4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#e3c94a" stop-opacity="0.50"/>
+            <stop offset=".62" stop-color="#e3c94a" stop-opacity="0.26"/>
+            <stop offset="1"   stop-color="#e3c94a" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="bray5" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#e08a3c" stop-opacity="0.50"/>
+            <stop offset=".62" stop-color="#e08a3c" stop-opacity="0.26"/>
+            <stop offset="1"   stop-color="#e08a3c" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="bray6" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#ffffff" stop-opacity="0.59"/>
+            <stop offset=".14" stop-color="#cf4636" stop-opacity="0.50"/>
+            <stop offset=".62" stop-color="#cf4636" stop-opacity="0.26"/>
+            <stop offset="1"   stop-color="#cf4636" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="mSoft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5"/></filter>
+          <filter id="bSoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+        </defs>
+
+        <!-- 第一顆：畫面中央，往左下飛，星星從它身邊往右上流過去 -->
+        <g class="meteor">
+          <path class="trail" d="M793,413 L1330,-110 L809,429 Z" fill="url(#trailG)"/>
+          <circle class="hglow" cx="800" cy="420" r="52" fill="url(#headG)"/>
+          <circle class="head"  cx="800" cy="420" r="7"  fill="#ffffff"/>
+        </g>
+
+
+        <!-- 撞擊點的過曝核心 -->
+        <ellipse class="hit" cx="800" cy="480" rx="300" ry="150" fill="url(#headG)"/>
+
+        <!-- 穿過去那一刻散開的七彩 -->
+        <g class="burst" filter="url(#bSoft)">
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray0)" style="--a:-34deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray1)" style="--a:-22deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray2)" style="--a:-11deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray3)" style="--a:0deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray4)" style="--a:11deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray5)" style="--a:22deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray6)" style="--a:34deg"/>
+        </g>
+
+        <rect class="flash" x="-40" y="-40" width="1680" height="980" fill="#fffdf4"/>
+      </svg>
+
+      <!-- 光落地 -->
+      <div class="wash-bloom" aria-hidden="true"></div>
+      <div class="wash" aria-hidden="true"></div>
+
+      <!-- 光變成顏料，名字跟它穿梭 -->
+      <div class="landing" aria-hidden="true">
+        <div class="bar">
+          <i style="background:#6a4fd0"></i><i style="background:#3b6fe0"></i><i style="background:#35b8c9"></i><i style="background:#57bf6a"></i><i style="background:#e3c94a"></i><i style="background:#e08a3c"></i><i style="background:#cf4636"></i>
+        </div>
+        <div class="bar-labels">
+          <i>380</i><i>450</i><i>490</i><i>530</i><i>580</i><i>620</i><i>700 NM</i>
+        </div>
+        <div class="wordmark">
+          <span class="lt l0" style="--i:0">D</span>
+          <span class="lt l1" style="--i:1">E</span>
+          <span class="lt l0" style="--i:2">A</span>
+          <span class="lt l1" style="--i:3;margin-right:.40em">R</span>
+          <span class="lt l0" style="--i:4">L</span>
+          <span class="lt l1" style="--i:5">I</span>
+          <span class="lt l0" style="--i:6">G</span>
+          <span class="lt l1" style="--i:7">H</span>
+          <span class="lt l0" style="--i:8">T</span>
+        </div>
+      </div>
+
+      <div class="band b-settle" data-a="0.930" data-b="1.00" data-entrance="settle" data-split="word">
+        <p class="sr">在你需要多一點底氣的地方，我們都在。從感情裡的猶豫，到台上的那一刻。</p>
+        <h1 class="huge split" aria-hidden="true">在你需要多一點底氣的地方，我們都在。</h1>
+        <p class="sub" aria-hidden="true">從感情裡的猶豫，到台上的那一刻。</p>
+        <div class="cta-row">
+          <a class="btn" id="cta-hero" href="#guiyouguang">去找歸・有光聊聊<span class="arrow" aria-hidden="true"></span></a>
+        </div>
+      </div>
+
+      <div class="cue" aria-hidden="true"><span></span>往下捲</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 靜態開場：手機與關閉動效的訪客 ============ -->
+<header class="static-hero" id="staticHero">
+  <svg class="static-scene" viewBox="0 0 800 1400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="sglow">
+        <stop offset="0" stop-color="#fffdf4" stop-opacity="0.34"/>
+        <stop offset="1" stop-color="#fffdf4" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="sglass" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#e4ecff" stop-opacity="0.20"/>
+        <stop offset=".5" stop-color="#ffffff" stop-opacity="0.06"/>
+        <stop offset="1" stop-color="#94abdd" stop-opacity="0.15"/>
+      </linearGradient>
+      <filter id="sblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+      <filter id="srays" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+    </defs>
+
+    <g class="s-dots">
+        <circle cx="119" cy="993" r="7" fill="#6a4fd0" opacity="0.34"/>
+        <circle cx="728" cy="651" r="3" fill="none" stroke="#35b8c9" stroke-width="1.4" opacity="0.31"/>
+        <circle cx="132" cy="61" r="7" fill="#6a4fd0" opacity="0.34"/>
+        <circle cx="213" cy="715" r="4" fill="none" stroke="#3b6fe0" stroke-width="1.4" opacity="0.31"/>
+        <circle cx="548" cy="788" r="4" fill="#35b8c9" opacity="0.34"/>
+        <circle cx="303" cy="609" r="3" fill="none" stroke="#35b8c9" stroke-width="1.4" opacity="0.31"/>
+        <circle cx="589" cy="645" r="4" fill="none" stroke="#6a4fd0" stroke-width="1.4" opacity="0.31"/>
+        <circle cx="126" cy="475" r="7" fill="#cf4636" opacity="0.34"/>
+        <circle cx="196" cy="600" r="7" fill="#6a4fd0" opacity="0.34"/>
+        <circle cx="249" cy="889" r="5" fill="#6a4fd0" opacity="0.34"/>
+        <circle cx="358" cy="396" r="5" fill="none" stroke="#e08a3c" stroke-width="1.4" opacity="0.31"/>
+        <circle cx="246" cy="515" r="4" fill="none" stroke="#57bf6a" stroke-width="1.4" opacity="0.31"/>
+        <circle cx="548" cy="354" r="4" fill="none" stroke="#e3c94a" stroke-width="1.4" opacity="0.31"/>
+        <circle cx="392" cy="115" r="7" fill="#6a4fd0" opacity="0.34"/>
+    </g>
+
+    <circle cx="400" cy="500" r="230" fill="url(#sglow)"/>
+
+    <rect x="374" y="-80" width="52" height="700" fill="#cfe0ff" opacity=".38" filter="url(#sblur)"/>
+    <rect x="392" y="-80" width="16" height="700" fill="#fffdf4"/>
+
+    <g class="s-rays" filter="url(#srays)">
+        <rect x="392" y="588" width="16" height="900" fill="#6a4fd0" style="--a:-27deg"/>
+        <rect x="392" y="588" width="16" height="900" fill="#3b6fe0" style="--a:-18deg"/>
+        <rect x="392" y="588" width="16" height="900" fill="#35b8c9" style="--a:-9deg"/>
+        <rect x="392" y="588" width="16" height="900" fill="#57bf6a" style="--a:0deg"/>
+        <rect x="392" y="588" width="16" height="900" fill="#e3c94a" style="--a:9deg"/>
+        <rect x="392" y="588" width="16" height="900" fill="#e08a3c" style="--a:18deg"/>
+        <rect x="392" y="588" width="16" height="900" fill="#cf4636" style="--a:27deg"/>
+    </g>
+
+    <g class="s-prism">
+      <polygon points="400,372 548,596 252,596" fill="url(#sglass)" stroke="#e8eeff" stroke-width="2.4"/>
+      <path d="M400,372 L400,596" stroke="#e8eeff" stroke-width="1" opacity="0.25"/>
+      <path d="M400,372 L252,596" stroke="#ffffff" stroke-width="1.5" opacity="0.31"/>
+    </g>
+  </svg>
+
+  <div class="static-inner">
+    <p class="mono" style="color:#b9c2d8;margin:0 0 18px">DEAR LIGHT TEAM</p>
+    <h1>在你需要多一點底氣的地方，<br>我們都在。</h1>
+    <p class="sub">從感情裡的猶豫，到台上的那一刻。</p>
+    <div class="static-bar" aria-hidden="true">
+      <i style="background:#6a4fd0"></i><i style="background:#3b6fe0"></i><i style="background:#35b8c9"></i><i style="background:#57bf6a"></i><i style="background:#e3c94a"></i><i style="background:#e08a3c"></i><i style="background:#cf4636"></i>
+    </div>
+    <a class="btn" id="cta-static" href="#guiyouguang">去找歸・有光聊聊<span class="arrow" aria-hidden="true"></span></a>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- ---- 2. 光譜落下 ---- -->
+  <section class="sec-team" id="top" data-nm="380–700 NM">
+    <div class="kicker mono"><span>DEAR LIGHT TEAM</span><span class="rule" aria-hidden="true"></span><span>台灣・獨立開發</span></div>
+
+    <div class="doc-cols">
+      <p><b>我們是誰</b>Dear Light 團隊是一個小小的獨立開發團隊。我們做工具，讓人在需要多一點底氣的時候，可以先看清楚，再決定。</p>
+      <p><b>目前的作品</b>兩個。Dear Light App，戀愛警訊教育，即將上架。歸・有光，聊天型 AI agent，已經上架。</p>
+      <p><b>為什麼是光</b>白光看起來很單純，是因為所有顏色混在一起，你看不出來裡面有什麼。雲裡的冰晶不增加任何東西，它只是把本來就在裡面的東西分開。</p>
+      <p><b>之後</b>還會有更多作品。它們不一定跟感情有關，但都在做同一件事。</p>
+    </div>
+
+    <h2 class="huge bleed-l rise">同一道光，<br>落在不同的地方。</h2>
+
+    <div class="swatches" aria-hidden="true">
+      <div class="sw"><i style="background:#6a4fd0"></i><span class="lab">380 NM</span></div>
+      <div class="sw"><i style="background:#3b6fe0"></i><span class="lab">450 NM</span></div>
+      <div class="sw"><i style="background:#35b8c9"></i><span class="lab">490 NM</span></div>
+      <div class="sw"><i style="background:#57bf6a"></i><span class="lab">530 NM</span></div>
+      <div class="sw"><i style="background:#c98f3f"></i><span class="lab">580 NM · DEAR LIGHT</span></div>
+      <div class="sw"><i style="background:#9c3b2e"></i><span class="lab">620 NM · 歸有光</span></div>
+      <div class="sw"><i style="background:#cf4636"></i><span class="lab">700 NM</span></div>
+    </div>
+  </section>
+
+  <!-- ---- 3. 分光：唯一的互動時刻 ---- -->
+  <section class="sec-split on-ink" id="split" data-nm="INTERACTION">
+    <div class="split-wrap">
+      <div class="hold-stage" id="holdStage">
+        <svg class="hold-rays" viewBox="0 0 800 800" aria-hidden="true">
+          <defs>
+            <radialGradient id="bloom">
+              <stop offset="0"    stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".18"  stop-color="#fff3cf" stop-opacity="0.28"/>
+              <stop offset=".40"  stop-color="#57bf6a" stop-opacity="0.14"/>
+              <stop offset=".62"  stop-color="#3b6fe0" stop-opacity="0.10"/>
+              <stop offset="1"    stop-color="#6a4fd0" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="anam" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0"   stop-color="#35b8c9" stop-opacity="0"/>
+              <stop offset=".3"  stop-color="#8fdcff" stop-opacity="0.31"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="0.53"/>
+              <stop offset=".7"  stop-color="#8fdcff" stop-opacity="0.31"/>
+              <stop offset="1"   stop-color="#35b8c9" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray0" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#6a4fd0" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#6a4fd0" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#6a4fd0" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#6a4fd0" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#3b6fe0" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#3b6fe0" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#3b6fe0" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#3b6fe0" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#35b8c9" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#35b8c9" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#35b8c9" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#35b8c9" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#57bf6a" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#57bf6a" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#57bf6a" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#57bf6a" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#e3c94a" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#e3c94a" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#e3c94a" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#e3c94a" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray5" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#e08a3c" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#e08a3c" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#e08a3c" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#e08a3c" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray6" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#cf4636" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#cf4636" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#cf4636" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#cf4636" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray7" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#6a4fd0" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#6a4fd0" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#6a4fd0" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#6a4fd0" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray8" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#3b6fe0" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#3b6fe0" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#3b6fe0" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#3b6fe0" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray9" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#35b8c9" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#35b8c9" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#35b8c9" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#35b8c9" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray10" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#57bf6a" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#57bf6a" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#57bf6a" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#57bf6a" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray11" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#e3c94a" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#e3c94a" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#e3c94a" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#e3c94a" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray12" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#e08a3c" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#e08a3c" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#e08a3c" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#e08a3c" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="ray13" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"   stop-color="#cf4636" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#cf4636" stop-opacity="0.34"/>
+              <stop offset=".43" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".5"  stop-color="#ffffff" stop-opacity="1"/>
+              <stop offset=".57" stop-color="#ffffff" stop-opacity="0.59"/>
+              <stop offset=".78" stop-color="#cf4636" stop-opacity="0.34"/>
+              <stop offset="1"   stop-color="#cf4636" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="flareSoft" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="3.2"/>
+            </filter>
+            <filter id="spikeSoft" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="1.4"/>
+            </filter>
+            <filter id="ghostSoft" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="7"/>
+            </filter>
+          </defs>
+
+          <circle class="bloom" cx="400" cy="400" r="150" fill="url(#bloom)"/>
+
+
+          <!-- 交疊的光束。白核、兩端消失 -->
+          <g class="flare" filter="url(#flareSoft)">
+            <rect x="385" y="10" width="30" height="780" fill="url(#ray0)" style="--a:0.0deg;--sp:0.55"/>
+            <rect x="391" y="10" width="18" height="780" fill="url(#ray1)" style="--a:12.9deg;--sp:0.66"/>
+            <rect x="385" y="10" width="30" height="780" fill="url(#ray2)" style="--a:25.7deg;--sp:0.77"/>
+            <rect x="391" y="10" width="18" height="780" fill="url(#ray3)" style="--a:38.6deg;--sp:0.88"/>
+            <rect x="385" y="10" width="30" height="780" fill="url(#ray4)" style="--a:51.4deg;--sp:0.99"/>
+            <rect x="391" y="10" width="18" height="780" fill="url(#ray5)" style="--a:64.3deg;--sp:0.55"/>
+            <rect x="385" y="10" width="30" height="780" fill="url(#ray6)" style="--a:77.1deg;--sp:0.66"/>
+            <rect x="391" y="10" width="18" height="780" fill="url(#ray7)" style="--a:90.0deg;--sp:0.77"/>
+            <rect x="385" y="10" width="30" height="780" fill="url(#ray8)" style="--a:102.9deg;--sp:0.88"/>
+            <rect x="391" y="10" width="18" height="780" fill="url(#ray9)" style="--a:115.7deg;--sp:0.99"/>
+            <rect x="385" y="10" width="30" height="780" fill="url(#ray10)" style="--a:128.6deg;--sp:0.55"/>
+            <rect x="391" y="10" width="18" height="780" fill="url(#ray11)" style="--a:141.4deg;--sp:0.66"/>
+            <rect x="385" y="10" width="30" height="780" fill="url(#ray12)" style="--a:154.3deg;--sp:0.77"/>
+            <rect x="391" y="10" width="18" height="780" fill="url(#ray13)" style="--a:167.1deg;--sp:0.88"/>
+          </g>
+
+          <!-- 鏡頭鬼影，排在一條斜軸上 -->
+          <g class="ghosts" filter="url(#ghostSoft)">
+            <circle cx="214" cy="282" r="26" fill="#e3c94a" opacity="0.3" style="--g:0.62"/>
+            <circle cx="298" cy="335" r="15" fill="#35b8c9" opacity="0.26" style="--g:0.34"/>
+            <circle cx="490" cy="457" r="20" fill="#cf4636" opacity="0.24" style="--g:0.30"/>
+            <circle cx="565" cy="504" r="34" fill="#6a4fd0" opacity="0.22" style="--g:0.55"/>
+            <circle cx="640" cy="552" r="13" fill="#57bf6a" opacity="0.28" style="--g:0.80"/>
+            <circle cx="730" cy="609" r="46" fill="#3b6fe0" opacity="0.16" style="--g:1.10"/>
+          </g>
+
+          <!-- 橫向拉長的光殘 -->
+          <ellipse class="anam" cx="400" cy="400" rx="390" ry="7" fill="url(#anam)"/>
+
+          <!-- 十字星芒 -->
+          <g class="spikes" filter="url(#spikeSoft)">
+            <rect x="398.5" y="-40" width="3" height="880" fill="#ffffff" style="--a:0deg;--sp:1.00"/>
+            <rect x="398.5" y="-40" width="3" height="880" fill="#ffffff" style="--a:45deg;--sp:0.72"/>
+            <rect x="398.5" y="-40" width="3" height="880" fill="#ffffff" style="--a:90deg;--sp:0.86"/>
+            <rect x="398.5" y="-40" width="3" height="880" fill="#ffffff" style="--a:135deg;--sp:0.66"/>
+          </g>
+        </svg>
+        <!-- 繞著中心白光轉的環。每一圈傾角不同、轉向不同，做出立體感 -->
+        <div class="orbits" aria-hidden="true">
+          <i class="o1"></i><i class="o2"></i><i class="o3"></i>
+        </div>
+        <button class="hold-btn" id="holdBtn" aria-describedby="holdHelp">
+          <span>按住不放</span>
+        </button>
+      </div>
+
+      <div class="split-copy">
+        <div class="kicker mono"><span>INTERACTION</span><span class="rule" aria-hidden="true"></span></div>
+        <h2 class="tagline rise">按著不放，<br>把光分開。</h2>
+        <p class="lede rise" id="holdHelp">按住左邊那顆光，它會慢慢散開。散完就停在那裡，再點一下才收回去。<span id="holdState">混在一起的時候，它只是一道白光。</span></p>
+        <div class="stat rise">
+          <div class="prod-pip" data-pip="1">
+            <i class="dot" style="background:#c98f3f" aria-hidden="true"></i>
+            <span class="name">Dear Light App</span>
+            <span class="nm mono">580 NM</span>
+          </div>
+          <div class="prod-pip" data-pip="2">
+            <i class="dot" style="background:#9c3b2e" aria-hidden="true"></i>
+            <span class="name">歸・有光</span>
+            <span class="nm mono">620 NM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- 4. Dear Light App ---- -->
+  <section class="sec-dl" id="dearlight" data-nm="580 NM">
+    <div class="kicker mono">
+      <span>作品一</span><span class="rule" aria-hidden="true"></span>
+      <span class="status"><i class="pulse" aria-hidden="true"></i>即將上架</span>
+    </div>
+
+    <h2 class="huge name rise">Dear&nbsp;Light</h2>
+
+    <div class="grid">
+      <div>
+        <p class="tagline rise">你儘管放心戀愛，<br>把關交給我們。</p>
+        <p class="lede rise">Dear Light 是一款戀愛警訊教育 App。<strong>不是要你戒掉戀愛腦</strong>，而是在你願意奮不顧身之前，先幫你把關。用有心理學根據的框架，陪你辨認關係裡值得留意的訊號，也記得留住那些讓你安心的好時刻。</p>
+        <p class="dl-note rise">狀態：即將上架<br>Android · Google Play 準備中<br>還沒有下載連結，所以這裡不會放一顆假的按鈕。</p>
+      </div>
+
+      <ul class="feats">
+        <li class="rise">
+          <div class="fig" aria-hidden="true">
+            <svg class="dipper" viewBox="0 0 160 86">
+              <path class="link" d="M10,20 L36,32 L62,38 L86,46 L92,70 L128,66 L122,34 L86,46"/>
+              <circle class="glow" cx="10" cy="20" r="7"/>
+              <circle cx="10" cy="20" r="3"/><circle cx="36" cy="32" r="2.4"/><circle cx="62" cy="38" r="2.4"/>
+              <circle cx="86" cy="46" r="2.4"/><circle cx="92" cy="70" r="2.4"/><circle cx="128" cy="66" r="2.4"/>
+              <circle cx="122" cy="34" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <span class="n">01</span>
+            <h3>星座式自我評估</h3>
+            <p>北斗七星散落畫面，選一顆星，走進屬於這段關係的提問。</p>
+          </div>
+        </li>
+        <li class="rise">
+          <div class="fig" aria-hidden="true">
+            <svg viewBox="0 0 160 86">
+              <rect x="16" y="14" width="52" height="52" rx="3" fill="none" stroke="#8a5f1e" stroke-width="1.2" opacity=".55" transform="rotate(-7 42 40)"/>
+              <rect x="52" y="26" width="52" height="52" rx="3" fill="none" stroke="#8a5f1e" stroke-width="1.2" opacity=".55" transform="rotate(5 78 52)"/>
+              <circle cx="112" cy="30" r="13" fill="#c98f3f" opacity="0.31"/>
+              <path d="M104,30 l6,6 l12,-14" fill="none" stroke="#8a5f1e" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <div>
+            <span class="n">02</span>
+            <h3>貼紙日記</h3>
+            <p>不只是找警訊，也記錄對方讓你安心的瞬間。</p>
+          </div>
+        </li>
+        <li class="rise">
+          <div class="fig" aria-hidden="true">
+            <svg viewBox="0 0 160 86">
+              <path d="M18,66 L18,20 Q46,10 74,20 L74,66 Q46,56 18,66 Z" fill="none" stroke="#8a5f1e" stroke-width="1.2" opacity="0.34"/>
+              <path d="M74,20 Q102,10 130,20 L130,66 Q102,56 74,66" fill="none" stroke="#8a5f1e" stroke-width="1.2" opacity="0.34"/>
+              <path d="M74,20 L74,66" stroke="#8a5f1e" stroke-width="1.2" opacity="0.34"/>
+              <path d="M30,32 L60,28 M30,42 L60,38 M88,28 L118,32 M88,38 L118,42" stroke="#c98f3f" stroke-width="1.6" opacity="0.46"/>
+            </svg>
+          </div>
+          <div>
+            <span class="n">03</span>
+            <h3>知識內容庫</h3>
+            <p>心理學框架寫成白話文，不用先懂術語才看得懂。</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ---- 5. 歸・有光：亮頁面裡的一座暗島 ---- -->
+  <section class="sec-gy on-ink" id="guiyouguang" data-nm="620 NM">
+    <div class="gy-glow" aria-hidden="true"></div>
+
+    <div class="kicker mono">
+      <span>作品二</span><span class="rule" aria-hidden="true"></span>
+      <span class="status live"><i class="pulse" aria-hidden="true"></i>已上架</span>
+    </div>
+
+    <h2 class="huge big rise">歸・有光</h2>
+
+    <div class="gy-grid">
+      <svg class="seal" viewBox="0 0 108 126" role="img" aria-label="歸有光印章">
+        <defs>
+          <filter id="inkpaste" x="-25%" y="-25%" width="150%" height="150%">
+            <!-- 邊緣不規則，像真的蓋下去的印 -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="11" result="edge"/>
+            <feDisplacementMap in="SourceGraphic" in2="edge" scale="7"
+                               xChannelSelector="R" yChannelSelector="G" result="shape"/>
+            <!-- 印泥的濃淡：有些地方油吃得少，顏色就薄 -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="4" seed="5" result="grain"/>
+            <feColorMatrix in="grain" type="luminanceToAlpha" result="ga"/>
+            <feComponentTransfer in="ga" result="gt">
+              <feFuncA type="linear" slope="0.62" intercept="-0.06"/>
+            </feComponentTransfer>
+            <feComposite in="shape" in2="gt" operator="arithmetic"
+                         k1="0" k2="1" k3="-0.55" k4="0"/>
+          </filter>
+        </defs>
+        <g filter="url(#inkpaste)">
+          <rect class="plate" x="5" y="5" width="98" height="116" rx="1.5"/>
+          <text x="54" y="38" text-anchor="middle">歸</text>
+          <text x="54" y="78" text-anchor="middle">有</text>
+          <text x="54" y="118" text-anchor="middle">光</text>
+        </g>
+      </svg>
+
+      <div>
+        <p class="lede rise">如果 Dear Light 陪你看見訊號，歸・有光就是那個可以隨時聊聊的朋友。用經濟學的角度，陪你梳理曖昧、交往、遠距離，或者猶豫著要不要分手時，心裡那團亂。<strong>同樣由 Dear Light 團隊開發，兩個作品並行，互相補位。</strong></p>
+        <div class="rise" style="margin-top:clamp(24px,3.2vw,42px)">
+          <a class="btn" id="cta-main" href="#">去找歸・有光聊聊<span class="arrow" aria-hidden="true"></span></a>
+          <span class="btn-note" id="ctaNote" hidden></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- 6. 常見疑問 ---- -->
+  <section id="faq" data-nm="FAQ">
+    <div class="kicker mono"><span>常見疑問</span><span class="rule" aria-hidden="true"></span><span>四題</span></div>
+    <h2 class="huge rise">你可能<br>想先問的。</h2>
+
+    <div class="faq">
+      <details>
+        <summary><span class="q">01</span><span>AI 又不懂我的感受，憑什麼分析我的感情？</span><span class="sign" aria-hidden="true"></span></summary>
+        <div class="a"><p>它不負責懂你的感受，那是你自己的事。它負責把你講出來的東西整理出結構，讓你自己看清楚。看清楚之後要怎麼決定，還是你決定。</p></div>
+      </details>
+      <details>
+        <summary><span class="q">02</span><span>這不是在教人疑神疑鬼嗎？</span><span class="sign" aria-hidden="true"></span></summary>
+        <div class="a"><p>剛好相反。「是我太敏感嗎」這句話之所以折磨人，是因為手上沒有東西可以對照。Dear Light 給你的是有心理學根據的框架，讓你分得出哪些訊號真的值得留意，哪些不是。</p><p>它也要你記下對方讓你安心的時刻，那一半一樣重要。</p></div>
+      </details>
+      <!-- 隱私那一題（原 03）等使用者提供真實答案後再加回來，不編造承諾。 -->
+      <details>
+        <summary><span class="q">03</span><span>兩個作品，我要選哪一個？</span><span class="sign" aria-hidden="true"></span></summary>
+        <div class="a"><p>不用選。Dear Light 陪你看見訊號，歸・有光陪你把話講出來。它們是並行的兩個作品，不是誰的精簡版。</p></div>
+      </details>
+      <details>
+        <summary><span class="q">04</span><span>Dear Light 什麼時候可以下載？</span><span class="sign" aria-hidden="true"></span></summary>
+        <div class="a"><p>目前鎖定 Android，在 Google Play 準備中。上架前這裡不會有下載連結。</p></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ---- 7. 更多作品 ---- -->
+  <section class="sec-more" data-nm="— NM">
+    <div class="unlit rise">
+      <span class="t">更多作品陸續推出。</span>
+      <span class="strip" aria-hidden="true"></span>
+      <span class="mono">光譜還沒走完</span>
+    </div>
+  </section>
+
+  <!-- ---- 8. 收尾 ---- -->
+  <section class="sec-end" data-nm="DEAR LIGHT TEAM">
+    <h2 class="huge bleed-l rise">在你需要<br>多一點底氣的地方，<br>我們都在。</h2>
+    <div class="rise">
+      <a class="btn" id="cta-end" href="#">去找歸・有光聊聊<span class="arrow" aria-hidden="true"></span></a>
+      <span class="btn-note" id="ctaNoteEnd" hidden></span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>
+    <span class="sig">DEAR LIGHT 團隊</span><br>
+    在你需要多一點底氣的地方，我們都在。
+  </div>
+  <div>
+    Dear Light App · 即將上架<br>
+    歸・有光 · 已上架
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   要替換的東西只有這一行。
+   把 Capafy 的網址填進引號裡，兩顆按鈕就會自動變成真的連結。
+   ============================================================ */
+var CAPAFY_URL = '';
+
+var clamp = function(v,lo,hi){ return Math.min(hi, Math.max(lo, v)); };
+var smoothstep = function(p,e0,e1){
+  var t = clamp((p - e0) / (e1 - e0), 0, 1);
+  return t * t * (3 - 2 * t);
+};
+/* 一次閃光：升得極快，落得慢一點 */
+var spike = function(p, a, peak, b){
+  if (p <= a || p >= b) return 0;
+  return p < peak ? smoothstep(p, a, peak) : (1 - smoothstep(p, peak, b));
+};
+function rng(seed){
+  var s = seed >>> 0;
+  return function(){ s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+}
+
+var stage  = document.getElementById('stage');
+var track  = document.getElementById('track');
+var photo  = document.getElementById('photo');
+var bands  = [].slice.call(document.querySelectorAll('.band'));
+
+/* ---------- 主要行動：沒有真網址就誠實說，不放一顆死按鈕 ---------- */
+(function wireCta(){
+  var real = CAPAFY_URL && CAPAFY_URL.indexOf('http') === 0;
+
+  /* 開場那兩顆先把訪客帶到歸・有光那一區（真實網址還沒有的時候，
+     那一區才是誠實說明狀態的地方）。網址一填，它們就直接連出去 */
+  if (real){
+    ['cta-hero','cta-static'].forEach(function(id){
+      var a = document.getElementById(id);
+      if (!a) return;
+      a.href = CAPAFY_URL; a.target = '_blank'; a.rel = 'noopener';
+    });
+  }
+
+  var main = ['cta-main','cta-end'];
+  var notes = ['ctaNote','ctaNoteEnd'];
+  main.forEach(function(id, i){
+    var a = document.getElementById(id);
+    var note = document.getElementById(notes[i]);
+    if (!a) return;
+    if (real){
+      a.href = CAPAFY_URL;
+      a.target = '_blank';
+      a.rel = 'noopener';
+    } else {
+      a.setAttribute('aria-disabled','true');
+      a.removeAttribute('href');
+      a.setAttribute('role','link');
+      if (note){ note.hidden = false; note.textContent = '連結準備中'; }
+    }
+  });
+})();
+
+/* ---------- 整站零圖片。開場跟静態開場都是手繪向量 ---------- */
+function loadHeroImage(){ /* 不再需要任何圖片 */ }
+
+/* ---------- 把字拆成詞和字，種子固定，每次載入都一樣 ---------- */
+(function splitAll(){
+  bands.forEach(function(band, bi){
+    var el = band.querySelector('.split');
+    if (!el) return;
+    var mode = band.getAttribute('data-split');
+    var spread = parseFloat(band.getAttribute('data-spread') || '0.5');
+    var text = el.textContent;
+    var r = rng(9973 + bi * 617);
+    var frag = document.createDocumentFragment();
+
+    if (mode === 'char'){
+      var chars = Array.from(text);
+      chars.forEach(function(ch, i){
+        if (ch === ' '){ frag.appendChild(document.createTextNode(' ')); return; }
+        var s = document.createElement('span');
+        s.className = 'c';
+        s.setAttribute('data-ch', ch);
+        s.textContent = ch;
+        s.style.setProperty('--th', (i / Math.max(1, chars.length - 1) * spread + r() * 0.06).toFixed(3));
+        frag.appendChild(s);
+      });
+    } else {
+      /* 中文沒有空白斷詞，所以用標點和換行當詞界，其餘每兩字一組 */
+      var units = text.split(/(，|。|、)/).filter(function(t){ return t !== ''; });
+      var idx = 0, total = units.length;
+      units.forEach(function(u){
+        var s = document.createElement('span');
+        s.className = 'w';
+        s.textContent = u;
+        s.style.setProperty('--th', (idx / Math.max(1, total - 1) * 0.5).toFixed(3));
+        idx++;
+        frag.appendChild(s);
+        if (u === '，'){ frag.appendChild(document.createElement('br')); }
+      });
+    }
+    el.textContent = '';
+    el.appendChild(frag);
+  });
+})();
+
+/* ---------- Hero 的驅動迴圈：收斂就休息 ---------- */
+var target = 0, shown = 0, rafId = null, lastTick = 0;
+var heroOnScreen = true;
+var scrubOn = false;
+
+function heroProgress(){
+  if (!track) return 0;
+  var rect = track.getBoundingClientRect();
+  var range = track.offsetHeight - window.innerHeight;
+  if (range <= 0) return 0;
+  return clamp(-rect.top / range, 0, 1);
+}
+
+/* 每段的快取，只在變化時寫 DOM */
+bands.forEach(function(b){ b._op = -1; b._k = -1; });
+var lastHp = -1;
+
+function paint(p){
+  /* 舞台層級的變數 */
+  if (Math.abs(p - lastHp) > 0.0015){
+    lastHp = p;
+    stage.style.setProperty('--hp', p.toFixed(4));
+    /* 一鏡到底：夜空 → 流星 → 鏡頭繞到它後面 → 一起俯衝雲層 → 穿雲 →
+       鏡頭繼續往下，雲和光球往上退出畫面，象牙白從底下升上來 */
+    stage.style.setProperty('--stars',  smoothstep(p, 0.000, 0.080).toFixed(4));
+    stage.style.setProperty('--travel', smoothstep(p, 0.040, 0.400).toFixed(4));
+    stage.style.setProperty('--swing',  smoothstep(p, 0.270, 0.440).toFixed(4));
+    stage.style.setProperty('--dive',   smoothstep(p, 0.300, 0.490).toFixed(4));
+    stage.style.setProperty('--pov',    smoothstep(p, 0.430, 0.580).toFixed(4));
+    stage.style.setProperty('--impact', smoothstep(p, 0.690, 0.735).toFixed(4));
+    stage.style.setProperty('--flash',  spike(p, 0.690, 0.706, 0.748).toFixed(4));
+    stage.style.setProperty('--spread', smoothstep(p, 0.715, 0.828).toFixed(4));
+    stage.style.setProperty('--exit',   smoothstep(p, 0.830, 0.925).toFixed(4));
+    stage.style.setProperty('--bar',    smoothstep(p, 0.876, 0.940).toFixed(4));
+    stage.style.setProperty('--word',   smoothstep(p, 0.905, 0.982).toFixed(4));
+    stage.classList.toggle('has-cloud', p > 0.27 && p < 0.96);
+    stage.classList.toggle('has-iri',   p > 0.66 && p < 0.96);
+    document.body.classList.toggle('lit', p > 0.90);
+  }
+
+  /* 每一段 */
+  for (var i = 0; i < bands.length; i++){
+    var b = bands[i];
+    var a = parseFloat(b.getAttribute('data-a'));
+    var z = parseFloat(b.getAttribute('data-b'));
+    var f = Math.min(0.02, (z - a) / 3);
+    var inRamp  = (a <= 0.001) ? 1 : smoothstep(p, a, a + f);
+    var outRamp = (z >= 0.999) ? 1 : (1 - smoothstep(p, z - f, z));
+    var op = inRamp * outRamp;
+
+    var ramp = Math.min(0.025, (z - a) * 0.35);
+    var k = clamp((p - a) / ramp, 0, 1);
+    if (a <= 0.001) k = Math.max(k, loadK);
+
+    if (Math.abs(op - b._op) > 0.004){ b._op = op; b.style.opacity = op.toFixed(3); }
+    if (Math.abs(k - b._k) > 0.008){ b._k = k; b.style.setProperty('--k', k.toFixed(3)); }
+  }
+}
+
+function tick(now){
+  var dt = Math.min(100, now - (lastTick || now));
+  lastTick = now;
+  var kk = 0.16;
+  shown += (target - shown) * (1 - Math.pow(1 - kk, dt / 16.667));
+  if (Math.abs(target - shown) < 0.0005){
+    shown = target; rafId = null; lastTick = 0;
+  } else {
+    rafId = requestAnimationFrame(tick);
+  }
+  paint(shown);
+}
+
+function onScroll(){
+  target = heroProgress();
+  if (rafId === null && heroOnScreen) rafId = requestAnimationFrame(tick);
+}
+
+/* 第一段載入時自己組裝好，不用等使用者捲 */
+var loadK = 0;
+function runLoadRamp(){
+  var t0 = performance.now();
+  (function step(now){
+    loadK = clamp((now - t0) / 1100, 0, 1);
+    paint(shown);
+    if (loadK < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+/* ---------- 靜態開場的五個條件：跟 CSS 一字不差 ---------- */
+var GATES = [
+  '(min-width: 0px)',            /* no-opening：永遠成立，直接走靜態開場 */
+  '(max-width: 720px)',
+  '(orientation: portrait) and (max-width: 1024px)',
+  '(orientation: portrait) and (pointer: coarse)',
+  '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
+  '(prefers-reduced-motion: reduce)'
+];
+var MQLS = GATES.map(function(q){ return matchMedia(q); });
+
+function enableScrub(){
+  if (scrubOn) return;
+  scrubOn = true;
+  window.addEventListener('scroll', onScroll, {passive:true});
+  bands.forEach(function(b){ b._op = -1; b._k = -1; });
+  lastHp = -1;
+  runLoadRamp();
+  onScroll();
+  paint(heroProgress());
+}
+function disableScrub(){
+  if (!scrubOn) return;
+  scrubOn = false;
+  window.removeEventListener('scroll', onScroll);
+  if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
+}
+function applyHeroMode(){
+  loadHeroImage();
+  if (MQLS.some(function(m){ return m.matches; })) disableScrub();
+  else enableScrub();
+}
+MQLS.forEach(function(m){
+  if (m.addEventListener) m.addEventListener('change', applyHeroMode);
+  else if (m.addListener) m.addListener(applyHeroMode);
+});
+
+if (track){
+  var io = new IntersectionObserver(function(es){
+    heroOnScreen = es[0].isIntersecting;
+    if (heroOnScreen && scrubOn) onScroll();
+  }, {rootMargin:'0px'});
+  io.observe(track);
+}
+
+/* ---------- 光譜軸：位置與讀數 ---------- */
+var railMark = document.querySelector('.rail-mark');
+var railRead = document.querySelector('.rail-read');
+var railH = 0, lastMarkY = -1, lastRead = '';
+
+function measureRail(){
+  var line = document.querySelector('.rail-line');
+  railH = line ? line.offsetHeight : 0;
+}
+function updateRail(){
+  if (!railMark || !railH) return;
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  var p = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
+  var y = Math.round(p * (railH - 3));
+  if (y !== lastMarkY){
+    lastMarkY = y;
+    railMark.style.transform = 'translate(-50%,' + y + 'px)';
+    if (railRead) railRead.style.transform = 'translate(-50%,' + (y + 14) + 'px)';
+  }
+}
+function setRead(text){
+  if (!railRead || text === lastRead) return;
+  lastRead = text;
+  railRead.textContent = text;
+}
+
+/* ---------- 進場編排 ---------- */
+var secIo = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting){
+      e.target.classList.add('in');
+      setTimeout(function(){ e.target.classList.add('entered'); }, 1400);
+      var nm = e.target.getAttribute('data-nm');
+      if (nm) setRead(nm);
+    }
+  });
+}, {threshold:0.18, rootMargin:'-6% 0px -22% 0px'});
+
+[].slice.call(document.querySelectorAll('section')).forEach(function(s){ secIo.observe(s); });
+
+var riseIo = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting){ e.target.classList.add('in'); riseIo.unobserve(e.target); }
+  });
+}, {threshold:0.14, rootMargin:'0px 0px -12% 0px'});
+[].slice.call(document.querySelectorAll('.rise')).forEach(function(r){ riseIo.observe(r); });
+
+/* ---------- 唯一的互動時刻：按住不放，把光分開 ---------- */
+(function holdToSplit(){
+  var stageEl = document.getElementById('holdStage');
+  var btn = document.getElementById('holdBtn');
+  var stateEl = document.getElementById('holdState');
+  var pips = [].slice.call(document.querySelectorAll('.prod-pip'));
+  if (!stageEl || !btn) return;
+
+  var label = btn.querySelector('span');
+  var hold = 0, holding = false, latched = false, raf = null, last = 0, done = false;
+
+  function apply(){
+    stageEl.style.setProperty('--hold', hold.toFixed(3));
+    var lit = Math.floor(hold * (pips.length + 0.35));
+    pips.forEach(function(p, i){ p.classList.toggle('lit', i < lit); });
+    if (hold > 0.97 && !done){
+      done = true;
+      if (stateEl) stateEl.textContent = '分開了。每一段，是一個作品。';
+      if (label) label.textContent = '再點一下';
+      btn.setAttribute('aria-pressed', 'true');
+    }
+    if (hold < 0.5 && done){
+      done = false;
+      if (stateEl) stateEl.textContent = '混在一起的時候，它只是一道白光。';
+      if (label) label.textContent = '按住不放';
+      btn.setAttribute('aria-pressed', 'false');
+    }
+  }
+  /* 擐滿就停在光芒四射，再點一下才收回 */
+  function goal(){ return (holding || latched) ? 1 : 0; }
+  function loop(now){
+    var dt = Math.min(64, now - (last || now));
+    last = now;
+    var g = goal();
+    if (g > hold) hold = Math.min(1, hold + dt * 0.00085);
+    else hold = Math.max(0, hold - dt * 0.0012);
+    apply();
+    if (hold !== g) raf = requestAnimationFrame(loop);
+    else { raf = null; last = 0; }
+  }
+  function kick(){ if (raf === null) raf = requestAnimationFrame(loop); }
+  function start(e){
+    if (e && e.cancelable) e.preventDefault();
+    if (latched){ latched = false; holding = false; kick(); return; }
+    holding = true; kick();
+  }
+  function end(){
+    if (!holding) return;
+    holding = false;
+    if (hold > 0.985) latched = true;
+    kick();
+  }
+
+  btn.addEventListener('pointerdown', start);
+  window.addEventListener('pointerup', end);
+  window.addEventListener('pointercancel', end);
+  btn.addEventListener('keydown', function(e){
+    if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); start(); }
+  });
+  btn.addEventListener('keyup', function(e){
+    if (e.key === ' ' || e.key === 'Enter'){ end(); }
+  });
+
+  /* 關閉動效：直接給完成狀態，不用按 */
+  window.__pinHold = function(){
+    hold = 1; holding = false; latched = true;
+    if (raf !== null){ cancelAnimationFrame(raf); raf = null; }
+    apply();
+  };
+  window.__unpinHold = function(){
+    hold = 0; holding = false; latched = false; done = false;
+    apply();
+    if (stateEl) stateEl.textContent = '混在一起的時候，它只是一道白光。';
+  };
+})();
+
+/* ---------- 關閉動效：兩個方向都即時處理 ---------- */
+function pinToFinalStates(){
+  document.body.classList.add('lit');
+  [].slice.call(document.querySelectorAll('.rise')).forEach(function(r){ r.classList.add('in'); });
+  [].slice.call(document.querySelectorAll('section')).forEach(function(s){ s.classList.add('in','entered'); });
+  if (window.__pinHold) window.__pinHold();
+}
+function unpinFinalStates(){
+  if (window.__unpinHold) window.__unpinHold();
+}
+var rmq = matchMedia('(prefers-reduced-motion: reduce)');
+function onRm(e){
+  if (e.matches){ disableScrub(); pinToFinalStates(); }
+  else { unpinFinalStates(); applyHeroMode(); }
+}
+if (rmq.addEventListener) rmq.addEventListener('change', onRm);
+else if (rmq.addListener) rmq.addListener(onRm);
+
+/* ---------- 分頁看不到就停 ---------- */
+document.addEventListener('visibilitychange', function(){
+  document.body.classList.toggle('paused', document.hidden);
+});
+
+/* ---------- 啟動 ---------- */
+function boot(){
+  measureRail();
+  applyHeroMode();
+  if (rmq.matches) pinToFinalStates();
+  updateRail();
+  requestAnimationFrame(function(){ document.body.classList.add('ready'); });
+}
+window.addEventListener('scroll', updateRail, {passive:true});
+window.addEventListener('resize', function(){
+  measureRail(); lastMarkY = -1; updateRail();
+  if (scrubOn){ lastHp = -1; onScroll(); }
+}, {passive:true});
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+else boot();
+
+})();
+</script>
+</body>
+</html>
