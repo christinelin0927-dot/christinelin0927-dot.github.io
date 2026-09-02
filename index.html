@@ -860,25 +860,13 @@ footer .sig{font-family:"Syne",sans-serif;font-weight:800;font-size:15px;letter-
 body.paused *,body.paused *::before,body.paused *::after{animation-play-state:paused !important}
 
 /* ============================================================
-   靜態開場的五個條件。這五條字串在 CSS 和 JS 裡必須一字不差
+   靜態開場現在只剩一個條件：訪客自己在系統裡關掉了動效。
+   手機、平板、觸控裝置一律跟桌機看同一段開場。
+   這裡的字串必須跟 JS 的 GATES 一字不差
    ============================================================ */
 @media (max-width: 720px){
-  .hero{display:none}
-  .static-hero{display:flex}
   .rail{display:none}
   section,footer{padding-left:var(--pad)}
-}
-@media (orientation: portrait) and (max-width: 1024px){
-  .hero{display:none}
-  .static-hero{display:flex}
-}
-@media (orientation: portrait) and (pointer: coarse){
-  .hero{display:none}
-  .static-hero{display:flex}
-}
-@media (orientation: landscape) and (pointer: coarse) and (max-height: 560px){
-  .hero{display:none}
-  .static-hero{display:flex}
 }
 @media (prefers-reduced-motion: reduce){
   .hero{display:none}
@@ -1109,6 +1097,52 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 @media (max-width:1080px){
   .landing{top:28%}
   .wordmark{font-size:clamp(32px,8.6vw,84px);padding-left:var(--pad)}
+}
+
+/* ============================================================
+   直式與窄螢幕的開場。手機跑的是跟桌機一模一樣的那一段動畫，
+   這裡只把構圖從橫的挪成直的：位置、字級、捲動長度，內容一個都不換。
+   場景 SVG 本來就是 preserveAspectRatio="slice"，直式會自己裁邊填滿；
+   光球全程在畫面正中央，所以裁掉的是兩側的星空，不是主體。
+
+   這一塊一定要放在樣式表的最後。上面的 max-width:1080px 區塊
+   選擇器權重一樣，寫在前面就會被它蓋掉（.wordmark 曾經被壓回 33.5px）
+   ============================================================ */
+@media (max-width:720px), (orientation:portrait) and (max-width:1024px){
+  :root{--rail-w:0px}          /* 光譜軸在窄螢幕是隱藏的，不要再留 64px 空位 */
+  .stage{height:100svh}        /* 用最小視窗高：網址列收合時開場不會整段跳動 */
+  .hero-track{height:560vh}    /* 桌機 760vh 在手機要捲太久 */
+
+  /* 桌機的名字落在畫面 34% 高的位置，直式畫面高很多，30% 才對得上同一個比例 */
+  .landing{top:30%;height:clamp(96px,17vh,170px)}
+  /* DEAR LIGHT 是 nowrap 的九個字母，9.0vw 是實測不出血的上限（12.4vw 時 H 和 T 會掉出畫面） */
+  .wordmark{font-size:clamp(30px,9.0vw,76px);padding-left:var(--pad)}
+  /* 色譜條要比字矮，字才穿得過去。桌機是字高的 0.7 倍，直式跟著這個比例 */
+  .landing .bar{height:clamp(20px,3.0vh,36px)}
+  .landing .bar-labels{top:calc(44% + clamp(20px,3.0vh,36px) + 6px);font-size:8px}
+
+  /* 中文整句不能被切，所以這裡讓它換行，不是縮到爆出畫面 */
+  .b-settle{bottom:11vh;padding-left:var(--pad);padding-right:var(--pad)}
+  .b-settle .huge{
+    font-size:clamp(23px,6.2vw,34px);
+    line-height:1.24;
+    width:auto;white-space:normal;
+  }
+  .b-settle .sub{font-size:clamp(13px,3.5vw,16px)}
+  .cue{left:var(--pad)}
+}
+
+/* 手機橫放：畫面只剩 390 左右的高度，桌機的構圖會讓名字、色譜條和
+   收尾的字疊在一起。這裡整段壓扁，不是換成靜態版 */
+@media (orientation:landscape) and (max-height:560px){
+  .landing{top:8%;height:clamp(64px,22vh,100px)}
+  .wordmark{font-size:clamp(24px,5.0vw,48px)}
+  .landing .bar{height:clamp(16px,7vh,30px)}
+  .landing .bar-labels{top:calc(44% + clamp(16px,7vh,30px) + 5px);font-size:8px}
+  .b-settle{bottom:6vh}
+  .b-settle .huge{font-size:clamp(20px,3.2vw,30px);line-height:1.22;width:auto;white-space:normal}
+  .b-settle .sub{font-size:13px;margin-top:10px}
+  .b-settle .cta-row{margin-top:14px}
 }
 
 </style>
@@ -2191,10 +2225,6 @@ function runLoadRamp(){
 
 /* ---------- 靜態開場的五個條件：跟 CSS 一字不差 ---------- */
 var GATES = [
-  '(max-width: 720px)',
-  '(orientation: portrait) and (max-width: 1024px)',
-  '(orientation: portrait) and (pointer: coarse)',
-  '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
   '(prefers-reduced-motion: reduce)'
 ];
 var MQLS = GATES.map(function(q){ return matchMedia(q); });
