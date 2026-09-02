@@ -882,8 +882,12 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* 平板與中等寬度 */
 @media (max-width:1080px){
   .split-wrap{grid-template-columns:1fr;gap:clamp(34px,6vw,54px)}
-  .hold-stage{max-width:min(86vw,420px);margin-inline:auto}
-  .hold-rays{inset:-70%}
+  /* 這裡只寫 max-width 會出事：margin-inline:auto 讓這個格線項目從「撐滿」
+     改成「縮到內容大小」，內容就只有那顆 78px 的按鈕，整個舞台跟著塌成
+     78×78（桌機是 430×430），光芒、軌道環、鬼影全部縮到五分之一。
+     一定要給定寬度 */
+  .hold-stage{width:min(86vw,420px);max-width:100%;margin-inline:auto}
+  .hold-rays{inset:-46%}   /* 光芒外溢的比例對齊桌機的 722/430 */
   .sec-dl .grid{grid-template-columns:1fr}
   .gy-grid{grid-template-columns:1fr}
   .seal{width:110px}
@@ -1052,8 +1056,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   animation:seg 7.5s var(--ease-soft) infinite alternate;
 }
 .landing .bar i:nth-child(1){--sh:.52;animation-delay:0s}
-.landing .bar i:nth-child(2){--sh:.68;margin-bottom:24px;animation-delay:-1.1s}
-.landing .bar i:nth-child(3){--sh:.40;margin-bottom:24px;animation-delay:-2.3s}
+/* 七段共用同一條底線。第 2、3 段原本各有 margin-bottom:24px 浮在半空，
+   底邊跟其他五段對不齊，已拿掉。高度差（--sh）保留，寬度不動 */
+.landing .bar i:nth-child(2){--sh:.68;animation-delay:-1.1s}
+.landing .bar i:nth-child(3){--sh:.40;animation-delay:-2.3s}
 .landing .bar i:nth-child(4){--sh:.86;animation-delay:-3.4s}
 .landing .bar i:nth-child(5){--sh:.58;animation-delay:-4.6s}
 .landing .bar i:nth-child(6){--sh:.94;animation-delay:-5.2s}
