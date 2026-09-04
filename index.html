@@ -174,7 +174,7 @@ body.lit .rail-line{opacity:.62}
 .stage{
   position:sticky;top:0;height:100svh;height:100vh;
   overflow:hidden;background:var(--ink);
-  --hp:0;--fan:0;--wash:0;--bar:0;--bloom:0;
+  --hp:0;--fan:0;--wash:0;--bar:0;--bloom:0;--beam:0;--word:0;
 }
 
 .photo{
@@ -962,8 +962,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* ---- 雲層：真的 3D 平面 ---- */
 .stage .cloudstage{display:none}
 .stage.has-cloud .cloudstage{display:block}
-.stage .iri{display:none}
-.stage.has-iri .iri{display:block}
 .cloudstage{
   position:absolute;inset:0;pointer-events:none;z-index:2;
   /* 透視距離必須遠大於平面近端的 Z，否則近端會穿過攝影機被裁掉 */
@@ -984,11 +982,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .cloudplane svg{width:100%;height:100%;display:block}
 .cl-a{opacity:.8;transform:translateY(calc(var(--dive) * -3%))}
 .cl-b{opacity:.55;transform:translateY(calc(var(--dive) * -7%))}
-/* 穿過去那一刻，雲自己變成虹彩 */
-.iri{
-  opacity:calc(var(--impact) * 1.0 * (1 - var(--exit) * .85));
-  mix-blend-mode:screen;
-}
 
 /* ---- 流星 ---- */
 .sky-top{
@@ -1023,7 +1016,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 .burst rect{
   transform-box:view-box;transform-origin:800px 480px;
   transform:rotate(var(--a)) scaleY(calc(.02 + .98 * var(--spread)));
-  opacity:calc(var(--spread) * .95 * (1 - var(--exit) * .5));
+  opacity:calc(var(--spread) * .95 * (1 - var(--exit)));
   mix-blend-mode:screen;
 }
 .burst{transform-box:view-box;transform-origin:800px 480px;
@@ -1036,13 +1029,51 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   transform:translateY(calc((1 - var(--exit)) * 101%));
   height:clamp(110px,19vh,210px);
   pointer-events:none;
+  /* 色譜條的高度只定義在這裡。光柱的落點和波長標籤的位置都跟著它，
+     三個地方各寫一次 clamp 就是三個地方各錯一次 */
+  --barh:clamp(46px,8.2vh,96px);
 }
+/* 光柱：七道光打下來，落點就是色譜條的七格。
+   楔形共用同一個頂點，底邊各自等於一格的寬度，底邊貼齊色譜條的上緣，
+   所以「光」和「顏色」在畫面上是同一件事，不是兩件分開的東西 */
+.landing .spill{
+  position:absolute;left:var(--pad);right:var(--pad);
+  top:44%;height:46vh;
+  /* 底邊落到色譜條的底線，不是上緣。七段各自高矮不同，光就各自打在
+     自己那一格的頂上，短的那格光多走一段，這才是「光落下來變成顏色」。
+     橫向縮放跟色譜條同一條式子，兩者永遠對得上 */
+  transform:translateY(calc(-100% + var(--barh))) scaleX(calc(.1 + .9 * var(--bar)));
+  transform-origin:50% 50%;
+  z-index:4;pointer-events:none;
+  filter:blur(3px);
+  opacity:var(--beam);
+}
+/* 每一道光都要橫跨整條光柱才畫得出來（它從中心斜著走到自己那一格），
+   所以是七層 inset:0 疊在一起各自裁形，不是七個並排的盒子。
+   並排的盒子會把斜線裁掉，只剩直角三角形 */
+.landing .spill i{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(var(--c),0)     0%,
+    rgba(var(--c),.05)  40%,
+    rgba(var(--c),.17)  80%,
+    rgba(var(--c),.30) 100%);
+  clip-path:polygon(49.3% 0, 50.7% 0, var(--r) 100%, var(--l) 100%);
+}
+.landing .spill i:nth-child(1){--l:0%;      --r:14.286%}
+.landing .spill i:nth-child(2){--l:14.286%; --r:28.571%}
+.landing .spill i:nth-child(3){--l:28.571%; --r:42.857%}
+.landing .spill i:nth-child(4){--l:42.857%; --r:57.143%}
+.landing .spill i:nth-child(5){--l:57.143%; --r:71.429%}
+.landing .spill i:nth-child(6){--l:71.429%; --r:85.714%}
+.landing .spill i:nth-child(7){--l:85.714%; --r:100%}
+
 /* 色譜條：七段各自不同高度，而且輕微起伏，所以不呆板。
    共用同一條底線，下面的波長標籤才對得齊 */
 .landing .bar{
   position:absolute;left:var(--pad);right:var(--pad);
   top:44%;bottom:auto;
-  height:clamp(46px,8.2vh,96px);
+  height:var(--barh);
   display:flex;align-items:flex-end;
   z-index:5;
   transform:scaleX(calc(.1 + .9 * var(--bar)));
@@ -1067,7 +1098,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 @keyframes seg{from{translate:0 0}to{translate:0 -7%}}
 .landing .bar-labels{
   position:absolute;left:var(--pad);right:var(--pad);
-  top:calc(44% + clamp(46px,8.2vh,96px) + 7px);bottom:auto;
+  top:calc(44% + var(--barh) + 7px);bottom:auto;
   z-index:5;
   opacity:calc(var(--bar) * var(--bar));
 }
@@ -1120,12 +1151,11 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .hero-track{height:560vh}    /* 桌機 760vh 在手機要捲太久 */
 
   /* 桌機的名字落在畫面 34% 高的位置，直式畫面高很多，30% 才對得上同一個比例 */
-  .landing{top:30%;height:clamp(96px,17vh,170px)}
+  .landing{top:30%;height:clamp(96px,17vh,170px);--barh:clamp(20px,3.0vh,36px)}
   /* DEAR LIGHT 是 nowrap 的九個字母，9.0vw 是實測不出血的上限（12.4vw 時 H 和 T 會掉出畫面） */
   .wordmark{font-size:clamp(30px,9.0vw,76px);padding-left:var(--pad)}
   /* 色譜條要比字矮，字才穿得過去。桌機是字高的 0.7 倍，直式跟著這個比例 */
-  .landing .bar{height:clamp(20px,3.0vh,36px)}
-  .landing .bar-labels{top:calc(44% + clamp(20px,3.0vh,36px) + 6px);font-size:8px}
+  .landing .bar-labels{top:calc(44% + var(--barh) + 6px);font-size:8px}
 
   /* 中文整句不能被切，所以這裡讓它換行，不是縮到爆出畫面 */
   .b-settle{bottom:11vh;padding-left:var(--pad);padding-right:var(--pad)}
@@ -1141,10 +1171,9 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* 手機橫放：畫面只剩 390 左右的高度，桌機的構圖會讓名字、色譜條和
    收尾的字疊在一起。這裡整段壓扁，不是換成靜態版 */
 @media (orientation:landscape) and (max-height:560px){
-  .landing{top:8%;height:clamp(64px,22vh,100px)}
+  .landing{top:8%;height:clamp(64px,22vh,100px);--barh:clamp(16px,7vh,30px)}
   .wordmark{font-size:clamp(24px,5.0vw,48px)}
-  .landing .bar{height:clamp(16px,7vh,30px)}
-  .landing .bar-labels{top:calc(44% + clamp(16px,7vh,30px) + 5px);font-size:8px}
+  .landing .bar-labels{top:calc(44% + var(--barh) + 5px);font-size:8px}
   .b-settle{bottom:6vh}
   .b-settle .huge{font-size:clamp(20px,3.2vw,30px);line-height:1.22;width:auto;white-space:normal}
   .b-settle .sub{font-size:13px;margin-top:10px}
@@ -1381,38 +1410,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
               <mask id="cmask">
                 <rect x="-100" y="0" width="1800" height="1200" fill="url(#cfade)"/>
               </mask>
-              <radialGradient id="iriRad" cx=".44" cy=".345" r=".30">
-                <stop offset="0"   stop-color="#fff" stop-opacity="1"/>
-                <stop offset=".45" stop-color="#fff" stop-opacity="0.38"/>
-                <stop offset="1"   stop-color="#fff" stop-opacity="0"/>
-              </radialGradient>
-              <mask id="irimask">
-                <rect x="-100" y="0" width="1800" height="1200" fill="url(#iriRad)"/>
-              </mask>
-              <radialGradient id="iriG" cx=".44" cy=".345" r=".30">
-                <stop offset="0"   stop-color="#ffffff"/>
-                <stop offset=".14" stop-color="#fff3c4"/>
-                <stop offset=".26" stop-color="#e3c94a"/>
-                <stop offset=".38" stop-color="#e08a3c"/>
-                <stop offset=".48" stop-color="#cf4636"/>
-                <stop offset=".60" stop-color="#6a4fd0"/>
-                <stop offset=".71" stop-color="#3b6fe0"/>
-                <stop offset=".82" stop-color="#35b8c9"/>
-                <stop offset=".92" stop-color="#57bf6a"/>
-                <stop offset="1"   stop-color="#57bf6a" stop-opacity="0"/>
-              </radialGradient>
-              <filter id="iriCut" x="0" y="0" width="100%" height="100%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.0075 0.0110" numOctaves="3" seed="13" result="n"/>
-                <feColorMatrix in="n" type="luminanceToAlpha" result="a"/>
-                <feComposite in="SourceGraphic" in2="a" operator="in"/>
-              </filter>
             </defs>
             <g mask="url(#cmask)">
               <rect class="cl-a" x="-100" y="0" width="1800" height="1200" fill="#fff" filter="url(#cloudA)"/>
               <rect class="cl-b" x="-100" y="80" width="1800" height="1120" fill="#fff" filter="url(#cloudB)"/>
-            </g>
-            <g mask="url(#irimask)">
-              <rect class="iri" x="-100" y="0" width="1800" height="1200" fill="url(#iriG)" filter="url(#iriCut)"/>
             </g>
           </svg>
         </div>
@@ -1491,13 +1492,14 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 
         <!-- 穿過去那一刻散開的七彩 -->
         <g class="burst" filter="url(#bSoft)">
-          <rect x="783" y="480" width="34" height="820" fill="url(#bray0)" style="--a:-34deg"/>
-          <rect x="783" y="480" width="34" height="820" fill="url(#bray1)" style="--a:-22deg"/>
-          <rect x="783" y="480" width="34" height="820" fill="url(#bray2)" style="--a:-11deg"/>
+          <!-- 負角往右、正角往左。紫排在最左邊，才接得上下面 380nm 那一格 -->
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray6)" style="--a:-34deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray5)" style="--a:-22deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray4)" style="--a:-11deg"/>
           <rect x="783" y="480" width="34" height="820" fill="url(#bray3)" style="--a:0deg"/>
-          <rect x="783" y="480" width="34" height="820" fill="url(#bray4)" style="--a:11deg"/>
-          <rect x="783" y="480" width="34" height="820" fill="url(#bray5)" style="--a:22deg"/>
-          <rect x="783" y="480" width="34" height="820" fill="url(#bray6)" style="--a:34deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray2)" style="--a:11deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray1)" style="--a:22deg"/>
+          <rect x="783" y="480" width="34" height="820" fill="url(#bray0)" style="--a:34deg"/>
         </g>
 
         <rect class="flash" x="-40" y="-40" width="1680" height="980" fill="#fffdf4"/>
@@ -1509,6 +1511,9 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 
       <!-- 光變成顏料，名字跟它穿梭 -->
       <div class="landing" aria-hidden="true">
+        <div class="spill">
+          <i style="--c:106,79,208"></i><i style="--c:59,111,224"></i><i style="--c:53,184,201"></i><i style="--c:87,191,106"></i><i style="--c:227,201,74"></i><i style="--c:224,138,60"></i><i style="--c:207,70,54"></i>
+        </div>
         <div class="bar">
           <i style="background:#6a4fd0"></i><i style="background:#3b6fe0"></i><i style="background:#35b8c9"></i><i style="background:#57bf6a"></i><i style="background:#e3c94a"></i><i style="background:#e08a3c"></i><i style="background:#cf4636"></i>
         </div>
@@ -2042,7 +2047,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
    要替換的東西只有這一行。
    把 Capafy 的網址填進引號裡，兩顆按鈕就會自動變成真的連結。
    ============================================================ */
-var CAPAFY_URL = '';
+var CAPAFY_URL = 'https://capafy.ai/zh-hant/agent/3740814975';
 
 var clamp = function(v,lo,hi){ return Math.min(hi, Math.max(lo, v)); };
 var smoothstep = function(p,e0,e1){
@@ -2176,8 +2181,11 @@ function paint(p){
     stage.style.setProperty('--exit',   smoothstep(p, 0.830, 0.925).toFixed(4));
     stage.style.setProperty('--bar',    smoothstep(p, 0.876, 0.940).toFixed(4));
     stage.style.setProperty('--word',   smoothstep(p, 0.905, 0.982).toFixed(4));
+    /* 光柱比色譜條早一點亮起來，天上的七道光才交得下去，中間不會斷；
+       名字定版前收乾淨，最後的畫面跟原本一模一樣 */
+    stage.style.setProperty('--beam',
+      (smoothstep(p, 0.855, 0.915) * (1 - smoothstep(p, 0.925, 0.968))).toFixed(4));
     stage.classList.toggle('has-cloud', p > 0.27 && p < 0.96);
-    stage.classList.toggle('has-iri',   p > 0.66 && p < 0.96);
     document.body.classList.toggle('lit', p > 0.90);
   }
 
